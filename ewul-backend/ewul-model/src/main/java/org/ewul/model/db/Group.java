@@ -2,13 +2,11 @@ package org.ewul.model.db;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "group")
-public class Group implements Model {
+public class Group implements Iterable<Role>, Model {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -19,7 +17,13 @@ public class Group implements Model {
     @Column(name = "name")
     private String name;
 
-    private Set<Role> roles;
+    @ManyToMany
+    @JoinTable(
+            name = "group_role",
+            joinColumns = @JoinColumn(name = "group", foreignKey = @ForeignKey(name = "fk_group_role_group")),
+            inverseJoinColumns = @JoinColumn(name = "role", foreignKey = @ForeignKey(name = "fk_group_role_role"))
+    )
+    private List<Role> roles;
 
     public Group() {
     }
@@ -35,6 +39,11 @@ public class Group implements Model {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    @Override
+    public Iterator<Role> iterator() {
+        return roles != null ? roles.iterator() : Collections.emptyIterator();
     }
 
     @Override
@@ -54,11 +63,11 @@ public class Group implements Model {
         this.name = name;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
