@@ -18,6 +18,7 @@
         <module>ewul-parent</module>
         <module>ewul-core</module>
         <module>ewul-model</module>
+        <module>ewul-server</module>
     </modules>
 
 </project>
