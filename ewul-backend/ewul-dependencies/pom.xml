@@ -19,6 +19,8 @@
         <!-- logging -->
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
+        <!-- db -->
+        <h2.version>1.4.200</h2.version>
         <!-- core -->
         <querydsl.version>4.4.0</querydsl.version>
         <!-- javax -->
@@ -49,6 +51,14 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+            </dependency>
+
+            <!-- db -->
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
             </dependency>
 
             <!-- querydsl dependencies -->
