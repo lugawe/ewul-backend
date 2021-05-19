@@ -22,6 +22,7 @@
         <!-- db -->
         <h2.version>1.4.200</h2.version>
         <!-- core -->
+        <guice.version>5.0.1</guice.version>
         <querydsl.version>4.4.0</querydsl.version>
         <!-- server -->
         <spring-boot.version>2.4.5</spring-boot.version>
@@ -64,6 +65,12 @@
             </dependency>
 
             <!-- core -->
+
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.querydsl</groupId>
