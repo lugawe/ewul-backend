@@ -8,13 +8,13 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
 @EntityScan("org.ewul.model.db")
-public class Main {
+public class EwulServer {
 
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
+    private static final Logger log = LoggerFactory.getLogger(EwulServer.class);
 
     public static void main(String[] args) {
         log.info("start ewul server");
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(EwulServer.class, args);
     }
 
 }
