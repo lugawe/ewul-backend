@@ -26,7 +26,7 @@ public class Account implements Principal, Model {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group", foreignKey = @ForeignKey(name = "fk_account_group"))
+    @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_account_auth_group"))
     private Group group;
 
     @NotNull

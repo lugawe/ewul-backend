@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
-@Table(name = "group")
+@Table(name = "auth_group")
 public class Group implements Iterable<Role>, Model {
 
     @Id
@@ -19,9 +19,9 @@ public class Group implements Iterable<Role>, Model {
 
     @ManyToMany
     @JoinTable(
-            name = "group_role",
-            joinColumns = @JoinColumn(name = "group", foreignKey = @ForeignKey(name = "fk_group_role_group")),
-            inverseJoinColumns = @JoinColumn(name = "role", foreignKey = @ForeignKey(name = "fk_group_role_role"))
+            name = "auth_group_role",
+            joinColumns = @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_auth_group_role_group")),
+            inverseJoinColumns = @JoinColumn(name = "auth_role", foreignKey = @ForeignKey(name = "fk_auth_group_role_role"))
     )
     private List<Role> roles;
 
