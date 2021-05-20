@@ -6,6 +6,8 @@ import javax.persistence.EntityManagerFactory;
 
 public interface EntityManagerHandler extends Provider<EntityManager> {
 
+    String getName();
+
     EntityManagerFactory getFactory();
 
 }
