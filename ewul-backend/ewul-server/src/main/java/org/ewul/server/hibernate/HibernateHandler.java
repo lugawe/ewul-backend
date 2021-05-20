@@ -1,17 +1,17 @@
 package org.ewul.server.hibernate;
 
-import org.ewul.core.management.EntityHandler;
+import org.ewul.core.entity.EntityManagerHandler;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.Objects;
 
-public class HibernateEntityHandler implements EntityHandler {
+public class HibernateHandler implements EntityManagerHandler {
 
     private final SessionFactory sessionFactory;
 
-    public HibernateEntityHandler(SessionFactory sessionFactory) {
+    public HibernateHandler(SessionFactory sessionFactory) {
         this.sessionFactory = Objects.requireNonNull(sessionFactory);
     }
 

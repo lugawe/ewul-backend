@@ -1,10 +1,10 @@
-package org.ewul.core.management;
+package org.ewul.core.entity;
 
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-public interface EntityHandler extends Provider<EntityManager> {
+public interface EntityManagerHandler extends Provider<EntityManager> {
 
     EntityManagerFactory getFactory();
 
