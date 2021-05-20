@@ -6,14 +6,18 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Objects;
 
+@Singleton
 public class HibernateHandler implements EntityManagerHandler {
 
     private static final Logger log = LoggerFactory.getLogger(HibernateHandler.class);
 
     private final SessionFactory sessionFactory;
 
+    @Inject
     public HibernateHandler(SessionFactory sessionFactory) {
         this.sessionFactory = Objects.requireNonNull(sessionFactory);
     }
