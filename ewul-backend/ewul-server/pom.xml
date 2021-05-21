@@ -49,6 +49,9 @@
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+                        <configuration>
+                            <finalName>ewul-server</finalName>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
