@@ -28,7 +28,7 @@ public abstract class BaseDAO<T extends Model> {
     }
 
     protected final EntityManager provide() {
-        log.debug("provide");
+        log.debug("{} provide", handler.getName());
         return handler.get();
     }
 
