@@ -15,7 +15,7 @@ public class UserAccountDAO extends BaseDAO<UserAccount> {
 
     @Inject
     public UserAccountDAO(EntityManagerHandler handler) {
-        super(UserAccount.class, Q_USER_ACCOUNT, handler);
+        super(UserAccount.class, handler);
     }
 
     public List<UserAccount> getAll() {
