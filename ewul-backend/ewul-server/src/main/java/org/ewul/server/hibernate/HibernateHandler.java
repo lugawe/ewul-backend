@@ -23,14 +23,20 @@ public class HibernateHandler implements EntityManagerHandler {
     }
 
     @Override
+    public SessionFactory getFactory() {
+        log.debug("getFactory");
+        return sessionFactory;
+    }
+
+    @Override
     public String getName() {
         return "hibernate-handler";
     }
 
     @Override
-    public SessionFactory getFactory() {
-        log.debug("getFactory");
-        return sessionFactory;
+    public void close() {
+        log.debug("close");
+        sessionFactory.close();
     }
 
     @Override
