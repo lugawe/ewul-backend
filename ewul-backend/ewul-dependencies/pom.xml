@@ -16,6 +16,9 @@
     <packaging>pom</packaging>
 
     <properties>
+        <!-- groovy -->
+        <groovy.version>3.0.8</groovy.version>
+        <gmavenplus.version>1.12.1</gmavenplus.version>
         <!-- logging -->
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -42,7 +45,15 @@
     <dependencyManagement>
         <dependencies>
 
-            <!-- logging dependencies -->
+            <!-- groovy -->
+
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy</artifactId>
+                <version>${groovy.version}</version>
+            </dependency>
+
+            <!-- logging -->
 
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -98,7 +109,7 @@
                 <version>${spring-boot.version}</version>
             </dependency>
 
-            <!-- javax dependencies -->
+            <!-- javax -->
 
             <dependency>
                 <groupId>javax.annotation</groupId>
@@ -139,6 +150,12 @@
     <build>
         <pluginManagement>
             <plugins>
+
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>${gmavenplus.version}</version>
+                </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
