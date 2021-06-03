@@ -1,9 +1,8 @@
 package org.ewul.server;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.ewul.core.Ewul;
 import org.ewul.core.config.CoreConfiguration;
-import org.ewul.core.inject.CoreModule;
 import org.ewul.core.service.UserAccountService;
 import org.ewul.server.hibernate.HibernateHandler;
 import org.hibernate.SessionFactory;
@@ -19,18 +18,11 @@ public class EwulServerConfig {
 
     private static final Logger log = LoggerFactory.getLogger(EwulServerConfig.class);
 
-    private final HibernateHandler hibernateHandler;
     private final Injector injector;
 
     @Inject
     public EwulServerConfig(SessionFactory sessionFactory) {
-        this.hibernateHandler = new HibernateHandler(sessionFactory);
-        this.injector = Guice.createInjector(new CoreModule(CoreConfiguration.empty(), hibernateHandler));
-    }
-
-    @Bean
-    public HibernateHandler hibernateHandler() {
-        return hibernateHandler;
+        this.injector = Ewul.injector(CoreConfiguration.empty(), new HibernateHandler(sessionFactory));
     }
 
     @Bean
