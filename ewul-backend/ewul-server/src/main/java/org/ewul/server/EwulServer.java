@@ -1,5 +1,6 @@
 package org.ewul.server;
 
+import org.ewul.core.Ewul;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +15,7 @@ public class EwulServer {
 
     public static void main(String[] args) {
         log.info("start ewul server");
+        Ewul.init();
         SpringApplication.run(EwulServer.class, args);
     }
 
