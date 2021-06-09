@@ -6,17 +6,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 
 @SpringBootApplication
 @EntityScan("org.ewul.model.db")
-public class EwulServer {
+public class EwulServer implements EnvironmentAware {
 
     private static final Logger log = LoggerFactory.getLogger(EwulServer.class);
 
     public static void main(String[] args) {
-        log.info("start ewul server");
-        Ewul.init();
         SpringApplication.run(EwulServer.class, args);
+    }
+
+    public EwulServer() {
+        log.debug("ewul-server init");
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        Ewul.init(environment.getActiveProfiles());
     }
 
 }

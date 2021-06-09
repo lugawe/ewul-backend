@@ -17,7 +17,7 @@ public final class Ewul {
     private Ewul() {
     }
 
-    public static void init() {
+    public static void init(String[] profiles) {
         log.info("init");
     }
 
