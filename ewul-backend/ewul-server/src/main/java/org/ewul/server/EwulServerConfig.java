@@ -3,7 +3,7 @@ package org.ewul.server;
 import com.google.inject.Injector;
 import org.ewul.core.Ewul;
 import org.ewul.core.config.CoreConfiguration;
-import org.ewul.core.service.UserAccountService;
+import org.ewul.core.service.AuthService;
 import org.ewul.server.hibernate.HibernateHandler;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -31,8 +31,8 @@ public class EwulServerConfig {
     }
 
     @Bean
-    public UserAccountService userAccountService() {
-        return injector.getInstance(UserAccountService.class);
+    public AuthService authService() {
+        return injector.getInstance(AuthService.class);
     }
 
 }
