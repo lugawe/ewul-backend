@@ -1,7 +1,6 @@
 package org.ewul.model.db;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.util.Objects;
@@ -19,8 +18,6 @@ public class Account implements Principal, Model {
     @Column(name = "name")
     private String name;
 
-    @NotNull
-    @Email
     @Column(name = "email")
     private String email;
 
