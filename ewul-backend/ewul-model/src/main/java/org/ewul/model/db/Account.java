@@ -18,9 +18,6 @@ public class Account implements Principal, Model {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "email")
-    private String email;
-
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_account_auth_group"))
@@ -28,7 +25,7 @@ public class Account implements Principal, Model {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "password", foreignKey = @ForeignKey(name = "fk_account_password"))
+    @JoinColumn(name = "auth_password", foreignKey = @ForeignKey(name = "fk_account_auth_password"))
     private Password password;
 
     public Account() {
@@ -63,14 +60,6 @@ public class Account implements Principal, Model {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Group getGroup() {

@@ -19,6 +19,10 @@ public class UserAccount extends Account {
     private String lastName;
 
     @NotNull
+    @Column(name = "email")
+    private String email;
+
+    @NotNull
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -43,6 +47,14 @@ public class UserAccount extends Account {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDateTime getCreatedAt() {
