@@ -28,10 +28,10 @@ public class JwtHandler {
         private Account account;
         private Set<String> roles;
 
-        private Date expiresAt;
-        private String issuer;
-
         private Map<String, String> properties;
+
+        private String issuer;
+        private Date expiresAt;
 
         public Builder() {
         }
@@ -55,24 +55,6 @@ public class JwtHandler {
             return this;
         }
 
-        public Builder withExpiresAt(Date expiresAt) {
-            this.expiresAt = Objects.requireNonNull(expiresAt);
-            return this;
-        }
-
-        public Builder withExpiresAt(long duration, TimeUnit timeUnit) {
-            if (duration < 1 || timeUnit == null) {
-                throw new NullPointerException();
-            }
-            this.expiresAt = new Date(System.currentTimeMillis() + timeUnit.toMillis(duration));
-            return this;
-        }
-
-        public Builder withIssuer(String issuer) {
-            this.issuer = Objects.requireNonNull(issuer);
-            return this;
-        }
-
         public Builder withProperties(Map<String, String> properties) {
             this.properties = Objects.requireNonNull(properties);
             return this;
@@ -85,6 +67,24 @@ public class JwtHandler {
                 this.properties = new LinkedHashMap<>();
             }
             this.properties.put(key, value);
+            return this;
+        }
+
+        public Builder withIssuer(String issuer) {
+            this.issuer = Objects.requireNonNull(issuer);
+            return this;
+        }
+
+        public Builder withExpiresAt(Date expiresAt) {
+            this.expiresAt = Objects.requireNonNull(expiresAt);
+            return this;
+        }
+
+        public Builder withExpiresAt(long duration, TimeUnit timeUnit) {
+            if (duration < 1 || timeUnit == null) {
+                throw new NullPointerException();
+            }
+            this.expiresAt = new Date(System.currentTimeMillis() + timeUnit.toMillis(duration));
             return this;
         }
 
@@ -105,20 +105,20 @@ public class JwtHandler {
                 builder.withClaim(AUTH_ID, id);
             }
 
-            if (roles != null) {
+            if (roles != null && !roles.isEmpty()) {
                 builder.withClaim(AUTH_ROLES, new ArrayList<>(roles));
             }
 
-            if (expiresAt != null) {
-                builder.withExpiresAt(expiresAt);
+            if (properties != null && !properties.isEmpty()) {
+                builder.withClaim(PROPERTIES, properties);
             }
 
             if (issuer != null) {
                 builder.withIssuer(issuer);
             }
 
-            if (properties != null && !properties.isEmpty()) {
-                builder.withClaim(PROPERTIES, properties);
+            if (expiresAt != null) {
+                builder.withExpiresAt(expiresAt);
             }
 
             return builder.sign(algorithm);
