@@ -6,7 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.auth0.jwt.interfaces.Verification;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.ewul.model.db.Account;
 import org.slf4j.Logger;
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 public class JwtHandler {
 
@@ -160,13 +160,14 @@ public class JwtHandler {
         }
     }
 
-    public JwtHolder decode(String token, Set<UUID> blockedIds) {
+    public JwtHolder decode(String token, Predicate<UUID> jwtIdChecker) {
         try {
             DecodedJWT jwt = getDecodedJWT(token);
+            UUID jwtId = UUID.fromString(jwt.getId());
             UUID authId = UUID.fromString(jwt.getClaim(AUTH_ID).asString());
 
-            if (blockedIds.contains(authId)) {
-                throw new IllegalStateException("authId blocked");
+            if (!jwtIdChecker.test(jwtId)) {
+                throw new IllegalStateException("jti check failed");
             }
 
             List<String> list = jwt.getClaim(AUTH_ROLES).asList(String.class);
@@ -195,7 +196,7 @@ public class JwtHandler {
     }
 
     public JwtHolder decode(String token) {
-        return decode(token, Collections.emptySet());
+        return decode(token, (jwtId) -> true);
     }
 
     public Algorithm getAlgorithm() {
