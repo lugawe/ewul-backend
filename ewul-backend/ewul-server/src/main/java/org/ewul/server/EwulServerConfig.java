@@ -3,6 +3,7 @@ package org.ewul.server;
 import com.google.inject.Injector;
 import org.ewul.core.Ewul;
 import org.ewul.core.config.CoreConfiguration;
+import org.ewul.core.dao.UserAccountDAO;
 import org.ewul.core.service.AuthService;
 import org.ewul.server.hibernate.HibernateHandler;
 import org.hibernate.SessionFactory;
@@ -28,6 +29,11 @@ public class EwulServerConfig {
     @Bean
     public Injector injector() {
         return injector;
+    }
+
+    @Bean
+    public UserAccountDAO userAccountDAO() {
+        return injector.getInstance(UserAccountDAO.class);
     }
 
     @Bean
