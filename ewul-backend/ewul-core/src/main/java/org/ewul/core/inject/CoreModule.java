@@ -2,16 +2,16 @@ package org.ewul.core.inject;
 
 import com.google.inject.AbstractModule;
 import org.ewul.core.config.CoreConfiguration;
-import org.ewul.core.entity.EntityManagerHandler;
+import org.ewul.core.entity.TransactionHandler;
 
 import java.util.Objects;
 
 public class CoreModule extends AbstractModule {
 
     private final CoreConfiguration configuration;
-    private final EntityManagerHandler handler;
+    private final TransactionHandler handler;
 
-    public CoreModule(CoreConfiguration configuration, EntityManagerHandler handler) {
+    public CoreModule(CoreConfiguration configuration, TransactionHandler handler) {
         this.configuration = Objects.requireNonNull(configuration);
         this.handler = Objects.requireNonNull(handler);
     }
@@ -19,7 +19,7 @@ public class CoreModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(CoreConfiguration.class).toInstance(configuration);
-        bind(EntityManagerHandler.class).toInstance(handler);
+        bind(TransactionHandler.class).toInstance(handler);
     }
 
 }
