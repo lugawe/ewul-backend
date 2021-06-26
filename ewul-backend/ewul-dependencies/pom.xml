@@ -20,7 +20,7 @@
         <groovy.version>3.0.8</groovy.version>
         <gmavenplus.version>1.12.1</gmavenplus.version>
         <!-- logging -->
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>1.7.31</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <!-- core -->
         <auth0-jwt.version>3.16.0</auth0-jwt.version>
@@ -28,7 +28,7 @@
         <guice.version>5.0.1</guice.version>
         <querydsl.version>4.4.0</querydsl.version>
         <!-- server -->
-        <spring-boot.version>2.5.1</spring-boot.version>
+        <spring-boot.version>2.5.2</spring-boot.version>
         <!-- db -->
         <h2.version>1.4.200</h2.version>
         <!-- javax -->
