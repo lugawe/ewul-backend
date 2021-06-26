@@ -2,7 +2,7 @@ package org.ewul.core.dao;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.ewul.core.entity.EntityManagerHandler;
+import org.ewul.core.entity.TransactionHandler;
 import org.ewul.model.db.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +16,16 @@ public abstract class BaseDAO<T extends Model> {
     private static final Logger log = LoggerFactory.getLogger(BaseDAO.class);
 
     protected final Class<T> entityClass;
-    protected final EntityManagerHandler handler;
+    protected final TransactionHandler handler;
 
-    protected BaseDAO(Class<T> entityClass, EntityManagerHandler handler) {
+    protected BaseDAO(Class<T> entityClass, TransactionHandler handler) {
         this.entityClass = Objects.requireNonNull(entityClass);
         this.handler = Objects.requireNonNull(handler);
     }
 
     protected final EntityManager provide() {
         log.debug("{} provide", handler.getName());
-        return handler.get();
+        return handler.provide();
     }
 
     protected void configure(EntityManager entityManager) {
