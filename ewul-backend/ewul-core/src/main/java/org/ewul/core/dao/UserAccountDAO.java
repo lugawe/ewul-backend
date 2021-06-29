@@ -13,23 +13,31 @@ import java.util.UUID;
 @Singleton
 public class UserAccountDAO extends BaseDAO<UserAccount> {
 
-    public static final QUserAccount Q_USER_ACCOUNT = new QUserAccount("userAccount");
+    private static final QUserAccount PATH = new QUserAccount("userAccount");
 
     @Inject
     public UserAccountDAO(TransactionHandler handler) {
         super(UserAccount.class, handler);
     }
 
+    public boolean exists(String name) {
+        if (name == null) {
+            throw new NullPointerException("param name");
+        }
+        UUID id = factory().select(PATH.id).from(PATH).where(PATH.name.eq(name)).fetchFirst();
+        return id != null;
+    }
+
     public Optional<UserAccount> getById(UUID id) {
         if (id == null) {
             throw new NullPointerException("param id");
         }
-        UserAccount account = factory().selectFrom(Q_USER_ACCOUNT).where(Q_USER_ACCOUNT.id.eq(id)).fetchOne();
+        UserAccount account = factory().selectFrom(PATH).where(PATH.id.eq(id)).fetchOne();
         return Optional.ofNullable(account);
     }
 
     public List<UserAccount> getAll() {
-        return factory().selectFrom(Q_USER_ACCOUNT).fetch();
+        return factory().selectFrom(PATH).fetch();
     }
 
 }
