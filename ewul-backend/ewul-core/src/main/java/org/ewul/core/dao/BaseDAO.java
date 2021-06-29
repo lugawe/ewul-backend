@@ -1,7 +1,10 @@
 package org.ewul.core.dao;
 
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.ewul.core.entity.TransactionHandler;
 import org.ewul.model.db.Model;
 import org.slf4j.Logger;
@@ -38,6 +41,20 @@ public abstract class BaseDAO<T extends Model> {
             return entityManager;
         };
         return new JPAQueryFactory(provider);
+    }
+
+    public JPAUpdateClause update(EntityPath<?> path) {
+        if (path == null) {
+            throw new NullPointerException("param path");
+        }
+        return factory().update(path);
+    }
+
+    public JPADeleteClause delete(EntityPath<?> path) {
+        if (path == null) {
+            throw new NullPointerException("param path");
+        }
+        return factory().delete(path);
     }
 
     public JPAQuery<?> query(long offset, long limit) {
