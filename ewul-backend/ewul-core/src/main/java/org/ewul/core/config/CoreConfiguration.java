@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class CoreConfiguration implements Serializable {
 
+    private static final CoreConfiguration EMPTY = new CoreConfiguration();
+
     private String name = "ewul-core-configuration";
 
     public CoreConfiguration() {
@@ -18,7 +20,7 @@ public class CoreConfiguration implements Serializable {
     }
 
     public static CoreConfiguration empty() {
-        return new CoreConfiguration();
+        return EMPTY;
     }
 
 }
