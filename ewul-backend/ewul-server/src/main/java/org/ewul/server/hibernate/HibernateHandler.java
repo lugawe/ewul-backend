@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Objects;
 
 @Singleton
@@ -17,6 +19,9 @@ public class HibernateHandler implements TransactionHandler {
 
     private final SessionFactory sessionFactory;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Inject
     public HibernateHandler(SessionFactory sessionFactory) {
         this.sessionFactory = Objects.requireNonNull(sessionFactory);
@@ -25,7 +30,10 @@ public class HibernateHandler implements TransactionHandler {
     @Override
     public Session provide() {
         log.debug("provide");
-        return sessionFactory.getCurrentSession();
+        if (entityManager == null) {
+            throw new NullPointerException("PersistenceContext: entity manager is null");
+        }
+        return entityManager.unwrap(Session.class);
     }
 
     @Override
@@ -35,7 +43,7 @@ public class HibernateHandler implements TransactionHandler {
 
     @Override
     public String getName() {
-        return "hibernate-transaction-handler";
+        return "hibernate-handler";
     }
 
     @Override
