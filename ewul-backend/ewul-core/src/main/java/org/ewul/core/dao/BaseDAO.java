@@ -1,10 +1,7 @@
 package org.ewul.core.dao;
 
 import com.querydsl.core.types.EntityPath;
-import com.querydsl.jpa.impl.JPADeleteClause;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.querydsl.jpa.impl.JPAUpdateClause;
+import com.querydsl.jpa.impl.*;
 import org.ewul.core.entity.TransactionHandler;
 import org.ewul.model.db.Model;
 import org.slf4j.Logger;
@@ -28,19 +25,24 @@ public abstract class BaseDAO<T extends Model> {
 
     protected final EntityManager provide() {
         log.debug("{} provide", handler.getName());
-        return handler.provide();
+        EntityManager entityManager = handler.provide();
+        configure(entityManager);
+        return entityManager;
     }
 
     protected void configure(EntityManager entityManager) {
     }
 
     public JPAQueryFactory factory() {
-        Provider<EntityManager> provider = () -> {
-            EntityManager entityManager = provide();
-            configure(entityManager);
-            return entityManager;
-        };
+        Provider<EntityManager> provider = this::provide;
         return new JPAQueryFactory(provider);
+    }
+
+    public JPAInsertClause insert(EntityPath<?> path) {
+        if (path == null) {
+            throw new NullPointerException("param path");
+        }
+        return factory().insert(path);
     }
 
     public JPAUpdateClause update(EntityPath<?> path) {
