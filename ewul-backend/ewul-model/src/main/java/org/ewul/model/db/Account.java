@@ -3,6 +3,7 @@ package org.ewul.model.db;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.security.Principal;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,6 +28,9 @@ public class Account implements Principal, Model {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auth_password", foreignKey = @ForeignKey(name = "fk_account_auth_password"))
     private Password password;
+
+    @Transient
+    private Map<String, String> properties;
 
     public Account() {
     }
@@ -76,6 +80,14 @@ public class Account implements Principal, Model {
 
     public void setPassword(Password password) {
         this.password = password;
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, String> properties) {
+        this.properties = properties;
     }
 
 }
