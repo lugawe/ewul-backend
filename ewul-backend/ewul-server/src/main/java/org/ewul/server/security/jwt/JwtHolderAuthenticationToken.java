@@ -7,12 +7,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.stream.Collectors;
 
-public class JwtHolderAuthentication extends AbstractAuthenticationToken {
+public class JwtHolderAuthenticationToken extends AbstractAuthenticationToken {
 
     protected final JwtHolder jwtHolder;
     protected Account account;
 
-    public JwtHolderAuthentication(JwtHolder jwtHolder) {
+    public JwtHolderAuthenticationToken(JwtHolder jwtHolder) {
         super(jwtHolder.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
         this.jwtHolder = jwtHolder;
     }
