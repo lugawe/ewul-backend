@@ -6,7 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.auth0.jwt.interfaces.Verification;
-import com.google.common.collect.Maps;
+import org.ewul.core.util.MapUtils;
+import org.ewul.model.User;
 import org.ewul.model.db.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +20,16 @@ public class JwtHandler {
 
     private static final Logger log = LoggerFactory.getLogger(JwtHandler.class);
 
-    public static final String AUTH_ID = "auth_id";
-    public static final String AUTH_ROLES = "auth_roles";
-    public static final String PROPERTIES = "properties";
+    public static final String CLAIM_AUTH_ID = "auth_id";
+    public static final String CLAIM_AUTH_NAME = "auth_name";
+    public static final String CLAIM_AUTH_ROLES = "auth_roles";
+    public static final String CLAIM_PROPERTIES = "properties";
 
     public static class Builder {
 
-        private Account account;
-        private Set<String> roles;
-
+        private String authId;
+        private String authName;
+        private Collection<String> roles;
         private Map<String, String> properties;
 
         private String issuer;
@@ -36,12 +38,29 @@ public class JwtHandler {
         public Builder() {
         }
 
-        public Builder withAccount(Account account) {
-            this.account = Objects.requireNonNull(account);
+        public Builder withAuthId(String authId) {
+            this.authId = Objects.requireNonNull(authId);
             return this;
         }
 
-        public Builder withRoles(Set<String> roles) {
+        public Builder withAuthName(String authName) {
+            this.authName = Objects.requireNonNull(authName);
+            return this;
+        }
+
+        public Builder withUser(User user) {
+            this.withAuthId(user.getId());
+            this.withAuthName(user.getName());
+            return this;
+        }
+
+        public Builder withAccount(Account account) {
+            this.withAuthId(account.getId().toString());
+            this.withAuthName(account.getName());
+            return this;
+        }
+
+        public Builder withRoles(Collection<String> roles) {
             this.roles = Objects.requireNonNull(roles);
             return this;
         }
@@ -82,7 +101,7 @@ public class JwtHandler {
 
         public Builder withExpiresAt(long duration, TimeUnit timeUnit) {
             if (duration < 1 || timeUnit == null) {
-                throw new NullPointerException();
+                throw new IllegalArgumentException();
             }
             this.expiresAt = new Date(System.currentTimeMillis() + timeUnit.toMillis(duration));
             return this;
@@ -100,17 +119,20 @@ public class JwtHandler {
 
             builder.withIssuedAt(new Date());
 
-            if (account != null) {
-                String id = account.getId().toString();
-                builder.withClaim(AUTH_ID, id);
+            if (authId != null) {
+                builder.withClaim(CLAIM_AUTH_ID, authId);
+            }
+
+            if (authName != null) {
+                builder.withClaim(CLAIM_AUTH_NAME, authName);
             }
 
             if (roles != null && !roles.isEmpty()) {
-                builder.withClaim(AUTH_ROLES, new ArrayList<>(roles));
+                builder.withClaim(CLAIM_AUTH_ROLES, new ArrayList<>(roles));
             }
 
             if (properties != null && !properties.isEmpty()) {
-                builder.withClaim(PROPERTIES, properties);
+                builder.withClaim(CLAIM_PROPERTIES, new LinkedHashMap<>(properties));
             }
 
             if (issuer != null) {
@@ -130,7 +152,7 @@ public class JwtHandler {
                 throw new NullPointerException("param jwtHandler");
             }
 
-            return build(jwtHandler.getAlgorithm());
+            return this.build(jwtHandler.getAlgorithm());
         }
 
     }
@@ -155,47 +177,44 @@ public class JwtHandler {
     public boolean isValid(String token) {
         try {
             return getDecodedJWT(token) != null;
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
             return false;
         }
     }
 
-    public JwtHolder decode(String token, Predicate<UUID> jwtIdChecker) {
+    public User decode(String token, Predicate<UUID> jwtIdChecker) {
         try {
             DecodedJWT jwt = getDecodedJWT(token);
             UUID jwtId = UUID.fromString(jwt.getId());
-            UUID authId = UUID.fromString(jwt.getClaim(AUTH_ID).asString());
 
             if (!jwtIdChecker.test(jwtId)) {
-                throw new IllegalStateException("jti check failed");
+                throw new IllegalStateException(String.format("jti check failed: %s", jwtId));
             }
 
-            List<String> list = jwt.getClaim(AUTH_ROLES).asList(String.class);
+            String authId = jwt.getClaim(CLAIM_AUTH_ID).asString();
+            String authName = jwt.getClaim(CLAIM_AUTH_NAME).asString();
+
+            List<String> list = jwt.getClaim(CLAIM_AUTH_ROLES).asList(String.class);
             if (list == null || list.isEmpty()) {
                 list = Collections.emptyList();
             }
-            Set<String> roles = new LinkedHashSet<>(list);
+            Collection<String> roles = Collections.unmodifiableList(list);
 
-            Map<String, Object> map = jwt.getClaim(PROPERTIES).asMap();
+            Map<String, Object> map = jwt.getClaim(CLAIM_PROPERTIES).asMap();
             if (map == null || map.isEmpty()) {
                 map = Collections.emptyMap();
             }
-            Map<String, String> properties = Maps.transformEntries(map, (key, value) -> {
-                if (key == null || value == null) {
-                    throw new NullPointerException();
-                }
-                return value.toString();
-            });
+            Map<String, String> properties = Collections.unmodifiableMap(MapUtils.toStringValueMap(map));
 
             log.info("jwt decoded: {}", authId);
 
-            return new JwtHolder(authId, Collections.unmodifiableSet(roles), Collections.unmodifiableMap(properties));
+            return new User(authId, authName, roles, properties);
         } catch (Exception ex) {
             throw new IllegalArgumentException("invalid jwt token", ex);
         }
     }
 
-    public JwtHolder decode(String token) {
+    public User decode(String token) {
         return decode(token, (jwtId) -> true);
     }
 
