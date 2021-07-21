@@ -20,12 +20,12 @@ public class Account implements Principal, Model {
     private String name;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_account_auth_group"))
     private Group group;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "auth_password", foreignKey = @ForeignKey(name = "fk_account_auth_password"))
     private Password password;
 
