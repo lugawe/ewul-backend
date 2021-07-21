@@ -1,6 +1,7 @@
 package org.ewul.core.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import org.ewul.model.User;
 import org.ewul.model.db.Account;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ class JwtHandlerTest {
         jwtHandler2 = new JwtHandler(Algorithm.HMAC256("foobar"));
         jwtHandler3 = new JwtHandler(Algorithm.HMAC256("secret"));
         account.setId(UUID.randomUUID());
+        account.setName("foobar");
     }
 
     @Test
@@ -45,17 +47,17 @@ class JwtHandlerTest {
         assertTrue(jwtHandler2.isValid(token));
         assertFalse(jwtHandler3.isValid(token));
 
-        JwtHolder holder = jwtHandler1.decode(token);
+        User holder = jwtHandler1.decode(token);
 
         assertNotNull(holder);
 
-        assertEquals(account.getId(), holder.getAuthId());
+        assertEquals(account.getId().toString(), holder.getId());
 
         holder = jwtHandler2.decode(token);
 
         assertNotNull(holder);
 
-        assertEquals(account.getId(), holder.getAuthId());
+        assertEquals(account.getId().toString(), holder.getId());
 
         assertThrows(RuntimeException.class, () -> jwtHandler3.decode(token));
 
