@@ -7,7 +7,6 @@ import org.ewul.model.db.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import java.util.Objects;
 
@@ -34,8 +33,7 @@ public abstract class BaseDAO<T extends Model> {
     }
 
     public JPAQueryFactory factory() {
-        Provider<EntityManager> provider = this::provide;
-        return new JPAQueryFactory(provider);
+        return new JPAQueryFactory(this::provide);
     }
 
     public JPAInsertClause insert(EntityPath<?> path) {
