@@ -38,6 +38,20 @@ public class JwtHandler {
         public Builder() {
         }
 
+        private Collection<String> roles() {
+            if (this.roles == null) {
+                this.roles = new LinkedHashSet<>();
+            }
+            return this.roles;
+        }
+
+        private Map<String, String> properties() {
+            if (this.properties == null) {
+                this.properties = new LinkedHashMap<>();
+            }
+            return this.properties;
+        }
+
         public Builder withAuthId(String authId) {
             this.authId = Objects.requireNonNull(authId);
             return this;
@@ -51,41 +65,57 @@ public class JwtHandler {
         public Builder withUser(User user) {
             this.withAuthId(user.getId());
             this.withAuthName(user.getName());
+            this.withProperties(user.getProperties(), true);
             return this;
         }
 
         public Builder withAccount(Account account) {
             this.withAuthId(account.getId().toString());
             this.withAuthName(account.getName());
+            this.withProperties(account.getProperties(), true);
+            return this;
+        }
+
+        public Builder withRoles(Collection<String> roles, boolean append) {
+            if (append) {
+                if (roles != null) {
+                    this.roles().addAll(roles);
+                }
+            } else {
+                this.roles = Objects.requireNonNull(roles);
+            }
             return this;
         }
 
         public Builder withRoles(Collection<String> roles) {
-            this.roles = Objects.requireNonNull(roles);
-            return this;
+            return this.withRoles(roles, false);
         }
 
         public Builder withRole(String role) {
             Objects.requireNonNull(role);
-            if (this.roles == null) {
-                this.roles = new LinkedHashSet<>();
+            this.roles().add(role);
+            return this;
+        }
+
+        public Builder withProperties(Map<String, String> properties, boolean append) {
+            if (append) {
+                if (properties != null) {
+                    this.properties().putAll(properties);
+                }
+            } else {
+                this.properties = Objects.requireNonNull(properties);
             }
-            this.roles.add(role);
             return this;
         }
 
         public Builder withProperties(Map<String, String> properties) {
-            this.properties = Objects.requireNonNull(properties);
-            return this;
+            return this.withProperties(properties, false);
         }
 
         public Builder withProperty(String key, String value) {
             Objects.requireNonNull(key);
             Objects.requireNonNull(value);
-            if (this.properties == null) {
-                this.properties = new LinkedHashMap<>();
-            }
-            this.properties.put(key, value);
+            this.properties().put(key, value);
             return this;
         }
 
