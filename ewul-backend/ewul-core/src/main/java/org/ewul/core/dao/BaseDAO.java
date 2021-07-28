@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import java.util.Objects;
+import java.util.UUID;
 
 public abstract class BaseDAO<T extends Model> {
 
@@ -30,6 +31,11 @@ public abstract class BaseDAO<T extends Model> {
     }
 
     protected void configure(EntityManager entityManager) {
+    }
+
+    public UUID insert(T entity) {
+        provide().persist(entity);
+        return Objects.requireNonNull(entity.getId());
     }
 
     public JPAQueryFactory factory() {
