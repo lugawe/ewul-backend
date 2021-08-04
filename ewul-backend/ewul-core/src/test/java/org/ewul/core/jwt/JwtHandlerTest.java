@@ -6,6 +6,7 @@ import org.ewul.model.db.Account;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +28,8 @@ class JwtHandlerTest {
         jwtHandler3 = new JwtHandler(Algorithm.HMAC256("secret"));
         account.setId(UUID.randomUUID());
         account.setName("foobar");
+        account.setProperties(new HashMap<>());
+        account.getProperties().put("foo", "bar");
     }
 
     @Test
@@ -34,9 +37,9 @@ class JwtHandlerTest {
 
         String token = new JwtHandler.Builder()
                 .withIssuer("test1")
+                .withProperty("prop1", "test!!!")
                 .withAccount(account)
                 .withRole("role1")
-                .withProperty("prop1", "test!!!")
                 .withProperty("prop2", "!!!test")
                 .withExpiresAt(2, TimeUnit.DAYS)
                 .build(jwtHandler1);
@@ -47,17 +50,17 @@ class JwtHandlerTest {
         assertTrue(jwtHandler2.isValid(token));
         assertFalse(jwtHandler3.isValid(token));
 
-        User holder = jwtHandler1.decode(token);
+        User user = jwtHandler1.decode(token);
 
-        assertNotNull(holder);
+        assertNotNull(user);
 
-        assertEquals(account.getId().toString(), holder.getId());
+        assertEquals(account.getId().toString(), user.getId());
 
-        holder = jwtHandler2.decode(token);
+        user = jwtHandler2.decode(token);
 
-        assertNotNull(holder);
+        assertNotNull(user);
 
-        assertEquals(account.getId().toString(), holder.getId());
+        assertEquals(account.getId().toString(), user.getId());
 
         assertThrows(RuntimeException.class, () -> jwtHandler3.decode(token));
 

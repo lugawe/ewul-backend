@@ -133,8 +133,8 @@ public class JwtHandler {
             if (duration < 1 || timeUnit == null) {
                 throw new IllegalArgumentException();
             }
-            this.expiresAt = new Date(System.currentTimeMillis() + timeUnit.toMillis(duration));
-            return this;
+            Date expiresAt = new Date(System.currentTimeMillis() + timeUnit.toMillis(duration));
+            return this.withExpiresAt(expiresAt);
         }
 
         public String build(Algorithm algorithm) {
@@ -236,7 +236,7 @@ public class JwtHandler {
             }
             Map<String, String> properties = Collections.unmodifiableMap(MapUtils.toStringValueMap(map));
 
-            log.info("jwt decoded: {}", authId);
+            log.debug("jwt decoded: {}", authId);
 
             return new User(authId, authName, roles, properties);
         } catch (Exception ex) {
