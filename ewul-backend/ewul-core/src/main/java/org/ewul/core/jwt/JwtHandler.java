@@ -35,6 +35,7 @@ public class JwtHandler {
 
         private String issuer;
         private Date expiresAt;
+        private Date notBefore;
 
         public Builder() {
         }
@@ -138,6 +139,19 @@ public class JwtHandler {
             return this.withExpiresAt(expiresAt);
         }
 
+        public Builder withNotBefore(Date notBefore) {
+            this.notBefore = Objects.requireNonNull(notBefore);
+            return this;
+        }
+
+        public Builder withNotBefore(long duration, TimeUnit timeUnit) {
+            if (duration < 1 || timeUnit == null) {
+                throw new IllegalArgumentException();
+            }
+            Date notBefore = new Date(System.currentTimeMillis() + timeUnit.toMillis(duration));
+            return this.withNotBefore(notBefore);
+        }
+
         public String build(Algorithm algorithm) {
 
             if (algorithm == null) {
@@ -174,6 +188,10 @@ public class JwtHandler {
                 builder.withExpiresAt(expiresAt);
             }
 
+            if (notBefore != null) {
+                builder.withNotBefore(notBefore);
+            }
+
             return builder.sign(algorithm);
         }
 
@@ -201,6 +219,7 @@ public class JwtHandler {
         }
 
         Verification verification = JWT.require(algorithm);
+        verification.withClaimPresence(CLAIM_AUTH_ID);
         JWTVerifier verifier = verification.build();
         return verifier.verify(token);
     }
