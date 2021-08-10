@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.auth0.jwt.interfaces.Verification;
 import org.ewul.core.util.MapUtils;
+import org.ewul.model.BasicUser;
 import org.ewul.model.User;
 import org.ewul.model.db.Account;
 import org.slf4j.Logger;
@@ -27,7 +28,7 @@ public class JwtHandler {
 
     public static class Builder {
 
-        private String authId;
+        private UUID authId;
         private String authName;
         private Collection<String> roles;
         private Map<String, String> properties;
@@ -52,7 +53,7 @@ public class JwtHandler {
             return this.properties;
         }
 
-        public Builder withAuthId(String authId) {
+        public Builder withAuthId(UUID authId) {
             this.authId = Objects.requireNonNull(authId);
             return this;
         }
@@ -70,7 +71,7 @@ public class JwtHandler {
         }
 
         public Builder withAccount(Account account) {
-            this.withAuthId(account.getId().toString());
+            this.withAuthId(account.getId());
             this.withAuthName(account.getName());
             this.withProperties(account.getProperties(), true);
             return this;
@@ -150,7 +151,7 @@ public class JwtHandler {
             builder.withIssuedAt(new Date());
 
             if (authId != null) {
-                builder.withClaim(CLAIM_AUTH_ID, authId);
+                builder.withClaim(CLAIM_AUTH_ID, authId.toString());
             }
 
             if (authName != null) {
@@ -221,7 +222,7 @@ public class JwtHandler {
                 throw new IllegalStateException(String.format("jti check failed: %s", jwtId));
             }
 
-            String authId = jwt.getClaim(CLAIM_AUTH_ID).asString();
+            UUID authId = UUID.fromString(jwt.getClaim(CLAIM_AUTH_ID).asString());
             String authName = jwt.getClaim(CLAIM_AUTH_NAME).asString();
 
             List<String> list = jwt.getClaim(CLAIM_AUTH_ROLES).asList(String.class);
@@ -238,7 +239,7 @@ public class JwtHandler {
 
             log.debug("jwt decoded: {}", authId);
 
-            return new User(authId, authName, roles, properties);
+            return new BasicUser(authId, authName, roles, properties);
         } catch (Exception ex) {
             throw new IllegalArgumentException("invalid jwt token", ex);
         }

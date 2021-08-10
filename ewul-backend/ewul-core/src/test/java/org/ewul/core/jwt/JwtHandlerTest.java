@@ -54,13 +54,13 @@ class JwtHandlerTest {
 
         assertNotNull(user);
 
-        assertEquals(account.getId().toString(), user.getId());
+        assertEquals(account.getId(), user.getId());
 
         user = jwtHandler2.decode(token);
 
         assertNotNull(user);
 
-        assertEquals(account.getId().toString(), user.getId());
+        assertEquals(account.getId(), user.getId());
 
         assertThrows(RuntimeException.class, () -> jwtHandler3.decode(token));
 
