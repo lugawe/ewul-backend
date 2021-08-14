@@ -1,10 +1,13 @@
 package org.ewul.core.entity;
 
+import com.querydsl.jpa.JPQLQueryFactory;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.io.Closeable;
 
-public interface TransactionHandler extends Closeable {
+public interface EntityDataHandler {
+
+    JPQLQueryFactory createQueryFactory();
 
     EntityManager provide();
 
