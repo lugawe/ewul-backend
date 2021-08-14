@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @MappedSuperclass
-public class Account implements Principal, Model {
+public class Account implements Principal, DbModel {
 
     @Id
     @GeneratedValue(generator = "system-uuid")

@@ -6,7 +6,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "auth_group")
-public class Group implements Iterable<Role>, Model {
+public class Group implements Iterable<Role>, DbModel {
 
     @Id
     @GeneratedValue(generator = "system-uuid")

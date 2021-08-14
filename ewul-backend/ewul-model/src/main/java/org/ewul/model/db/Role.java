@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "auth_role")
-public class Role implements Model {
+public class Role implements DbModel {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
