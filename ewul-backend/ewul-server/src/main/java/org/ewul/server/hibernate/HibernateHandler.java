@@ -1,6 +1,7 @@
 package org.ewul.server.hibernate;
 
-import org.ewul.core.entity.TransactionHandler;
+import com.querydsl.jpa.hibernate.HibernateQueryFactory;
+import org.ewul.core.entity.EntityDataHandler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -13,7 +14,7 @@ import javax.persistence.PersistenceContext;
 import java.util.Objects;
 
 @Singleton
-public class HibernateHandler implements TransactionHandler {
+public class HibernateHandler implements EntityDataHandler {
 
     private static final Logger log = LoggerFactory.getLogger(HibernateHandler.class);
 
@@ -25,6 +26,11 @@ public class HibernateHandler implements TransactionHandler {
     @Inject
     public HibernateHandler(SessionFactory sessionFactory) {
         this.sessionFactory = Objects.requireNonNull(sessionFactory);
+    }
+
+    @Override
+    public HibernateQueryFactory createQueryFactory() {
+        return new HibernateQueryFactory(this::provide);
     }
 
     @Override
@@ -44,12 +50,6 @@ public class HibernateHandler implements TransactionHandler {
     @Override
     public String getName() {
         return "hibernate-handler";
-    }
-
-    @Override
-    public void close() {
-        log.debug("close");
-        sessionFactory.close();
     }
 
 }
