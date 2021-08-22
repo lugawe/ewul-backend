@@ -1,6 +1,7 @@
 package org.ewul.core.dao;
 
-import org.ewul.core.entity.TransactionHandler;
+import com.querydsl.core.QueryResults;
+import org.ewul.core.entity.EntityDataHandler;
 import org.ewul.model.db.QUserAccount;
 import org.ewul.model.db.UserAccount;
 
@@ -16,7 +17,7 @@ public class UserAccountDAO extends BaseDAO<UserAccount> {
     private static final QUserAccount PATH = new QUserAccount("userAccount");
 
     @Inject
-    public UserAccountDAO(TransactionHandler handler) {
+    public UserAccountDAO(EntityDataHandler handler) {
         super(UserAccount.class, handler);
     }
 
@@ -24,7 +25,7 @@ public class UserAccountDAO extends BaseDAO<UserAccount> {
         if (name == null) {
             throw new NullPointerException("param name");
         }
-        UUID id = factory().select(PATH.id).from(PATH).where(PATH.name.eq(name)).fetchFirst();
+        UUID id = query(0, 1).select(PATH.id).from(PATH).where(PATH.name.equalsIgnoreCase(name)).fetchFirst();
         return id != null;
     }
 
@@ -32,12 +33,16 @@ public class UserAccountDAO extends BaseDAO<UserAccount> {
         if (id == null) {
             throw new NullPointerException("param id");
         }
-        UserAccount account = factory().selectFrom(PATH).where(PATH.id.eq(id)).fetchOne();
+        UserAccount account = query(0, 1).select(PATH).from(PATH).where(PATH.id.eq(id)).fetchOne();
         return Optional.ofNullable(account);
     }
 
+    public QueryResults<UserAccount> getAll(long offset, long limit) {
+        return query(offset, limit).select(PATH).from(PATH).fetchResults();
+    }
+
     public List<UserAccount> getAll() {
-        return factory().selectFrom(PATH).fetch();
+        return query().select(PATH).from(PATH).fetch();
     }
 
 }
