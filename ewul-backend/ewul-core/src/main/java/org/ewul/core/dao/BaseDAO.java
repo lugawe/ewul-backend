@@ -5,17 +5,14 @@ import com.querydsl.core.dml.InsertClause;
 import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.JPQLQueryFactory;
 import org.ewul.core.entity.EntityDataHandler;
+import org.ewul.core.entity.EntityQueryFactory;
 import org.ewul.model.db.DbModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public abstract class BaseDAO<T extends DbModel> {
-
-    private static final Logger log = LoggerFactory.getLogger(BaseDAO.class);
 
     protected final Class<T> entityClass;
     protected final EntityDataHandler handler;
@@ -25,8 +22,7 @@ public abstract class BaseDAO<T extends DbModel> {
         this.handler = Objects.requireNonNull(handler);
     }
 
-    public JPQLQueryFactory factory() {
-        log.debug("create query-factory");
+    public final EntityQueryFactory factory() {
         return handler.createQueryFactory();
     }
 
@@ -35,6 +31,13 @@ public abstract class BaseDAO<T extends DbModel> {
             throw new NullPointerException("param path");
         }
         return factory().insert(path);
+    }
+
+    public UUID insert(T entity) {
+        if (entity == null) {
+            throw new NullPointerException("param entity");
+        }
+        return factory().insert(entity);
     }
 
     public UpdateClause<?> update(EntityPath<?> path) {
