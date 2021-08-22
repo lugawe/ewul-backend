@@ -1,6 +1,5 @@
 package org.ewul.server.hibernate;
 
-import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import org.ewul.core.entity.EntityDataHandler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
