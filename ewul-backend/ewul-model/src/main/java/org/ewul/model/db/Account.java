@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @MappedSuperclass
-public class Account implements Principal, DbModel {
+public class Account implements Comparable<Account>, Principal, DbModel {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -46,6 +46,11 @@ public class Account implements Principal, DbModel {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    @Override
+    public int compareTo(Account account) {
+        return name.compareTo(account.name);
     }
 
     @Override
