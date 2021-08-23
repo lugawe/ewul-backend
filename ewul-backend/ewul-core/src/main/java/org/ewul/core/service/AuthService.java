@@ -40,6 +40,16 @@ public class AuthService {
 
     public Optional<UserAccount> login(String name, String password, Predicate<UserAccount> filter) {
 
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("param name");
+        }
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("param password");
+        }
+        if (filter == null) {
+            throw new IllegalArgumentException("param filter");
+        }
+
         Optional<UserAccount> _account = userAccountDAO.getByName(name);
         if (_account.isPresent()) {
             UserAccount account = _account.get();
