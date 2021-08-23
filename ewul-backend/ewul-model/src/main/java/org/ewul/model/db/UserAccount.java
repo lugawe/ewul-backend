@@ -3,11 +3,12 @@ package org.ewul.model.db;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_account")
+@Table(name = "account", uniqueConstraints = @UniqueConstraint(name = "uq_account_name", columnNames = "name"))
 public class UserAccount extends Account {
 
     @NotNull

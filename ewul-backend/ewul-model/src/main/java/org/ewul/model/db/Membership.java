@@ -5,8 +5,8 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
-@Table(name = "auth_group")
-public class Group implements Iterable<Role>, DbModel {
+@Table(name = "membership")
+public class Membership implements Iterable<Role>, DbModel {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -19,21 +19,21 @@ public class Group implements Iterable<Role>, DbModel {
 
     @ManyToMany
     @JoinTable(
-            name = "auth_group_role",
-            joinColumns = @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_auth_group_role_group")),
-            inverseJoinColumns = @JoinColumn(name = "auth_role", foreignKey = @ForeignKey(name = "fk_auth_group_role_role"))
+            name = "membership_role",
+            joinColumns = @JoinColumn(name = "membership", foreignKey = @ForeignKey(name = "fk_membership_role_membership")),
+            inverseJoinColumns = @JoinColumn(name = "role", foreignKey = @ForeignKey(name = "fk_membership_role_role"))
     )
     private List<Role> roles;
 
-    public Group() {
+    public Membership() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Group)) return false;
-        Group group = (Group) o;
-        return Objects.equals(id, group.id) && Objects.equals(name, group.name);
+        if (!(o instanceof Membership)) return false;
+        Membership membership = (Membership) o;
+        return Objects.equals(id, membership.id) && Objects.equals(name, membership.name);
     }
 
     @Override

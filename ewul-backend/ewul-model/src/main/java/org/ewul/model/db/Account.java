@@ -21,12 +21,12 @@ public class Account implements Principal, DbModel {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_account_auth_group"))
-    private Group group;
+    @JoinColumn(name = "membership", foreignKey = @ForeignKey(name = "fk_account_membership"))
+    private Membership membership;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "auth_password", foreignKey = @ForeignKey(name = "fk_account_auth_password"))
+    @JoinColumn(name = "password", foreignKey = @ForeignKey(name = "fk_account_password"))
     private Password password;
 
     @Transient
@@ -66,12 +66,12 @@ public class Account implements Principal, DbModel {
         this.name = name;
     }
 
-    public Group getGroup() {
-        return group;
+    public Membership getMembership() {
+        return membership;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setMembership(Membership membership) {
+        this.membership = membership;
     }
 
     public Password getPassword() {
