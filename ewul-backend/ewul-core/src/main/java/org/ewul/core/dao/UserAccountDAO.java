@@ -1,6 +1,5 @@
 package org.ewul.core.dao;
 
-import com.querydsl.core.QueryResults;
 import org.ewul.core.entity.EntityDataHandler;
 import org.ewul.model.db.QUserAccount;
 import org.ewul.model.db.UserAccount;
@@ -25,7 +24,7 @@ public class UserAccountDAO extends BaseDAO<UserAccount> {
         if (name == null) {
             throw new NullPointerException("param name");
         }
-        UUID id = query(0, 1).select(PATH.id).from(PATH).where(PATH.name.equalsIgnoreCase(name)).fetchFirst();
+        UUID id = query(0, 1).select(PATH.id).from(PATH).where(PATH.name.eq(name)).fetchFirst();
         return id != null;
     }
 
@@ -37,8 +36,16 @@ public class UserAccountDAO extends BaseDAO<UserAccount> {
         return Optional.ofNullable(account);
     }
 
-    public QueryResults<UserAccount> getAll(long offset, long limit) {
-        return query(offset, limit).select(PATH).from(PATH).fetchResults();
+    public Optional<UserAccount> getByName(String name) {
+        if (name == null) {
+            throw new NullPointerException("param name");
+        }
+        UserAccount account = query(0, 1).select(PATH).from(PATH).where(PATH.name.eq(name)).fetchOne();
+        return Optional.ofNullable(account);
+    }
+
+    public List<UserAccount> getAll(long offset, long limit) {
+        return query(offset, limit).select(PATH).from(PATH).fetch();
     }
 
     public List<UserAccount> getAll() {
