@@ -265,7 +265,7 @@ public class JwtHandler {
     }
 
     public User decode(String token) {
-        return decode(token, (jwtId) -> true);
+        return decode(token, Objects::nonNull);
     }
 
     public Algorithm getAlgorithm() {

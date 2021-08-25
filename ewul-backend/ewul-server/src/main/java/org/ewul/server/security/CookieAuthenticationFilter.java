@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 public class CookieAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -28,10 +30,21 @@ public class CookieAuthenticationFilter extends AbstractAuthenticationProcessing
     public static final String JWT_COOKIE_NAME = "auth_jwt";
 
     protected final JwtHandler jwtHandler;
+    protected final Predicate<UUID> jtiChecker;
 
-    public CookieAuthenticationFilter(RequestMatcher requestMatcher, JwtHandler jwtHandler) {
+    public CookieAuthenticationFilter(RequestMatcher requestMatcher,
+                                      JwtHandler jwtHandler,
+                                      Predicate<UUID> jtiChecker) {
+
         super(requestMatcher);
         this.jwtHandler = Objects.requireNonNull(jwtHandler);
+        this.jtiChecker = Objects.requireNonNull(jtiChecker);
+    }
+
+    public CookieAuthenticationFilter(RequestMatcher requestMatcher,
+                                      JwtHandler jwtHandler) {
+
+        this(requestMatcher, jwtHandler, Objects::nonNull);
     }
 
     @Override
@@ -48,13 +61,11 @@ public class CookieAuthenticationFilter extends AbstractAuthenticationProcessing
             throw new AuthenticationServiceException(String.format("no %s cookie provided", JWT_COOKIE_NAME));
         }
 
-        String jwt = cookie.get().getValue();
-
         try {
-            User holder = Objects.requireNonNull(jwtHandler.decode(jwt));
-            UserAuthenticationToken authentication = new UserAuthenticationToken(holder);
-            log.info("valid jwt authentication: {}", holder.getId());
-            return authentication;
+            String jwt = cookie.get().getValue();
+            User user = jwtHandler.decode(jwt, jtiChecker);
+            log.info("successful jwt authentication: {} ({})", user.getId(), user.getName());
+            return UserAuthenticationToken.create(user);
         } catch (Exception ex) {
             throw new AuthenticationServiceException("invalid jwt token", ex);
         }
