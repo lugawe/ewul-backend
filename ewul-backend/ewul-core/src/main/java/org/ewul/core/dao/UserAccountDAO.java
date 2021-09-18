@@ -44,6 +44,14 @@ public class UserAccountDAO extends BaseDAO<UserAccount> {
         return Optional.ofNullable(account);
     }
 
+    public Optional<UserAccount> getByEmail(String email) {
+        if (email == null) {
+            throw new NullPointerException("param email");
+        }
+        UserAccount account = query(0, 1).select(PATH).from(PATH).where(PATH.email.eq(email)).fetchOne();
+        return Optional.ofNullable(account);
+    }
+
     public List<UserAccount> getAll(long offset, long limit) {
         return query(offset, limit).select(PATH).from(PATH).fetch();
     }

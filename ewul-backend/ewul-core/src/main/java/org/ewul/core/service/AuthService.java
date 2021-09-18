@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -38,10 +39,14 @@ public class AuthService {
         return true;
     }
 
-    public Optional<UserAccount> login(String name, String password, Predicate<UserAccount> filter) {
+    protected void update(UserAccount account) {
+        account.setLastAccess(LocalDateTime.now());
+    }
 
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("param name");
+    public Optional<UserAccount> login(String email, String password, Predicate<UserAccount> filter) {
+
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("param email");
         }
         if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("param password");
@@ -50,20 +55,21 @@ public class AuthService {
             throw new IllegalArgumentException("param filter");
         }
 
-        Optional<UserAccount> _account = userAccountDAO.getByName(name);
+        Optional<UserAccount> _account = userAccountDAO.getByEmail(email);
         if (_account.isPresent()) {
             UserAccount account = _account.get();
             if (filter.test(account) && checkPassword(password, account.getPassword())) {
+                update(account);
                 return Optional.of(account);
             }
         }
 
-        log.warn("invalid login attempt: {}", name);
+        log.info("invalid login attempt: {}", email);
         return Optional.empty();
     }
 
-    public Optional<UserAccount> login(String name, String password) {
-        return login(name, password, Objects::nonNull);
+    public Optional<UserAccount> login(String email, String password) {
+        return login(email, password, Objects::nonNull);
     }
 
 }
