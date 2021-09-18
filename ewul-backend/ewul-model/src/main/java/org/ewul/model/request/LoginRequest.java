@@ -2,19 +2,19 @@ package org.ewul.model.request;
 
 public class LoginRequest {
 
-    private String hash;
+    private String token;
     private String email;
     private String password;
 
     public LoginRequest() {
     }
 
-    public String getHash() {
-        return hash;
+    public String getToken() {
+        return token;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getEmail() {
