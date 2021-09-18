@@ -36,6 +36,11 @@ public class BasicUser implements User {
     }
 
     @Override
+    public String toString() {
+        return String.format("BasicUser %s (%s)", name, id);
+    }
+
+    @Override
     public UUID getId() {
         return id;
     }
