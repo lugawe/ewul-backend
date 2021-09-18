@@ -64,7 +64,7 @@ public class CookieAuthenticationFilter extends AbstractAuthenticationProcessing
         try {
             String jwt = cookie.get().getValue();
             User user = jwtHandler.decode(jwt, jtiChecker);
-            log.info("successful jwt authentication: {} ({})", user.getId(), user.getName());
+            log.info("successful jwt authentication: {}", user);
             return UserAuthenticationToken.create(user);
         } catch (Exception ex) {
             throw new AuthenticationServiceException("invalid jwt token", ex);
