@@ -2,7 +2,7 @@ package org.ewul.server.security;
 
 import org.ewul.core.jwt.JwtHandler;
 import org.ewul.model.User;
-import org.ewul.server.security.jwt.UserAuthenticationToken;
+import org.ewul.server.security.jwt.JwtAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -11,12 +11,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -65,19 +62,10 @@ public class CookieAuthenticationFilter extends AbstractAuthenticationProcessing
             String jwt = cookie.get().getValue();
             User user = jwtHandler.decode(jwt, jtiChecker);
             log.info("successful jwt authentication: {}", user);
-            return UserAuthenticationToken.create(user);
+            return JwtAuthentication.create(user, jwt);
         } catch (Exception ex) {
             throw new AuthenticationServiceException("invalid jwt token", ex);
         }
-    }
-
-    @Override
-    public void successfulAuthentication(HttpServletRequest request,
-                                         HttpServletResponse response,
-                                         FilterChain chain,
-                                         Authentication authentication) throws IOException, ServletException {
-
-        super.successfulAuthentication(request, response, chain, authentication);
     }
 
 }
