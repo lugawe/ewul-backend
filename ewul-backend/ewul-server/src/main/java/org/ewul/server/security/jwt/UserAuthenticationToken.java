@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class UserAuthenticationToken extends AbstractAuthenticationToken {
 
     protected UserAuthenticationToken(Collection<? extends GrantedAuthority> authorities, User user) {
         super(authorities);
-        this.user = Objects.requireNonNull(user);
+        this.user = user;
     }
 
     @Override
@@ -30,6 +29,9 @@ public class UserAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     public static UserAuthenticationToken create(User user) {
+        if (user == null) {
+            throw new NullPointerException("user");
+        }
         Set<SimpleGrantedAuthority> authorities = user.getRoles()
                 .stream()
                 .filter(role -> role != null && !role.isEmpty())
