@@ -1,5 +1,6 @@
 package org.ewul.server.resources;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,6 +17,7 @@ public class AuthResource {
     public AuthResource() {
     }
 
+    @PermitAll
     @GET
     @Path("/test")
     public boolean test() {
