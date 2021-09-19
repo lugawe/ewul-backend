@@ -6,6 +6,7 @@ import io.dropwizard.setup.Environment;
 import org.ewul.core.util.Lazy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.vyarus.dropwizard.guice.GuiceBundle;
 
 public class EwulServer extends Application<EwulServerConfig> {
 
@@ -22,6 +23,7 @@ public class EwulServer extends Application<EwulServerConfig> {
 
     @Override
     public void initialize(Bootstrap<EwulServerConfig> bootstrap) {
+        bootstrap.addBundle(GuiceBundle.builder().enableAutoConfig("org.ewul.server").build());
     }
 
     @Override
