@@ -10,23 +10,23 @@ import javax.ws.rs.core.SecurityContext;
 import java.util.Map;
 import java.util.Optional;
 
-public class CookieAuthFilter extends AuthFilter<String, User> {
+public class JwtCookieAuthFilter extends AuthFilter<String, User> {
 
     public static final String AUTH_COOKIE_NAME = "auth_jwt";
 
-    public static class Builder extends AuthFilterBuilder<String, User, CookieAuthFilter> {
+    public static class Builder extends AuthFilterBuilder<String, User, JwtCookieAuthFilter> {
 
         public Builder() {
         }
 
         @Override
-        public CookieAuthFilter newInstance() {
-            return new CookieAuthFilter();
+        public JwtCookieAuthFilter newInstance() {
+            return new JwtCookieAuthFilter();
         }
 
     }
 
-    public CookieAuthFilter() {
+    public JwtCookieAuthFilter() {
     }
 
     @Override
