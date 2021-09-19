@@ -9,10 +9,12 @@ import com.auth0.jwt.interfaces.Verification;
 import org.ewul.core.util.MapUtils;
 import org.ewul.model.BasicUser;
 import org.ewul.model.User;
+import org.ewul.model.config.CoreConfiguration;
 import org.ewul.model.db.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
@@ -210,6 +212,11 @@ public class JwtHandler {
 
     public JwtHandler(Algorithm algorithm) {
         this.algorithm = Objects.requireNonNull(algorithm);
+    }
+
+    @Inject
+    public JwtHandler(CoreConfiguration configuration) {
+        this(Algorithm.HMAC512(configuration.getJwtConfiguration().getSecret()));
     }
 
     protected DecodedJWT getDecodedJWT(String token) {

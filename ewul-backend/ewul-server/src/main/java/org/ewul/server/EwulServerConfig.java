@@ -3,7 +3,7 @@ package org.ewul.server;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
-import org.ewul.core.config.CoreConfiguration;
+import org.ewul.model.config.CoreConfiguration;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

@@ -1,8 +1,8 @@
 package org.ewul.core.service;
 
-import org.ewul.core.config.CoreConfiguration;
 import org.ewul.core.dao.PasswordDAO;
 import org.ewul.core.dao.UserAccountDAO;
+import org.ewul.model.config.CoreConfiguration;
 import org.ewul.model.db.Password;
 import org.ewul.model.db.UserAccount;
 import org.slf4j.Logger;
