@@ -13,4 +13,5 @@ database:
   password: "root"
 
 core:
-  name: "ewul-server"
+  jwt:
+    secret: "123456"
