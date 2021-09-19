@@ -3,6 +3,7 @@ package org.ewul.server.auth;
 import io.dropwizard.auth.AuthFilter;
 import org.ewul.model.User;
 
+import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Cookie;
@@ -26,6 +27,7 @@ public class JwtCookieAuthFilter extends AuthFilter<String, User> {
 
     }
 
+    @Inject
     public JwtCookieAuthFilter() {
     }
 
