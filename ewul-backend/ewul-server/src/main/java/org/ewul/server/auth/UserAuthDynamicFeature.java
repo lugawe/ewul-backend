@@ -13,6 +13,8 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class UserAuthDynamicFeature extends AuthDynamicFeature {
 
+    public static final String DEFAULT_PREFIX = "JwtCookie";
+
     @Inject
     public UserAuthDynamicFeature(Environment environment,
                                   UserAuthenticator authenticator,
@@ -31,6 +33,7 @@ public class UserAuthDynamicFeature extends AuthDynamicFeature {
             throw new NullPointerException("authorizer");
         }
         return new JwtCookieAuthFilter.Builder()
+                .setPrefix(DEFAULT_PREFIX)
                 .setAuthenticator(authenticator)
                 .setAuthorizer(authorizer)
                 .buildAuthFilter();
