@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.container.ContainerRequestContext;
 
+@Singleton
 public class UserAuthorizer implements Authorizer<User> {
 
     private static final Logger log = LoggerFactory.getLogger(UserAuthorizer.class);
