@@ -29,6 +29,7 @@
         <querydsl.version>5.0.0</querydsl.version>
         <!-- server -->
         <dropwizard.version>2.0.25</dropwizard.version>
+        <dropwizard-guicey.version>5.3.0</dropwizard-guicey.version>
         <!-- db -->
         <h2.version>1.4.200</h2.version>
         <!-- javax -->
@@ -127,6 +128,12 @@
                 <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-auth</artifactId>
                 <version>${dropwizard.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ru.vyarus</groupId>
+                <artifactId>dropwizard-guicey</artifactId>
+                <version>${dropwizard-guicey.version}</version>
             </dependency>
 
             <!-- javax -->
