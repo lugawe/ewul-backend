@@ -27,6 +27,7 @@
         <guava.version>30.1.1-jre</guava.version>
         <guice.version>5.0.1</guice.version>
         <querydsl.version>5.0.0</querydsl.version>
+        <jackson.version>2.12.4</jackson.version>
         <!-- server -->
         <dropwizard.version>2.0.25</dropwizard.version>
         <dropwizard-guicey.version>5.3.0</dropwizard-guicey.version>
@@ -108,6 +109,18 @@
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-jpa</artifactId>
                 <version>${querydsl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
             <!-- server -->
