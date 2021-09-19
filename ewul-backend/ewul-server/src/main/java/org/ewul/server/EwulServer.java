@@ -28,6 +28,7 @@ public class EwulServer extends Application<EwulServerConfig> {
 
     @Override
     public void run(EwulServerConfig config, Environment environment) {
+        environment.jersey().setUrlPattern("/api/*");
     }
 
 }
