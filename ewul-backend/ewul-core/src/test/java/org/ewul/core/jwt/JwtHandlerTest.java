@@ -2,6 +2,7 @@ package org.ewul.core.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import org.ewul.model.User;
+import org.ewul.model.config.JwtConfiguration;
 import org.ewul.model.db.Account;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JwtHandlerTest {
 
+    static final JwtConfiguration jwtConfiguration = new JwtConfiguration();
+
     static JwtHandler jwtHandler1;
     static JwtHandler jwtHandler2;
 
@@ -23,9 +26,9 @@ class JwtHandlerTest {
 
     @BeforeAll
     static void init() {
-        jwtHandler1 = new JwtHandler(Algorithm.HMAC256("foobar"));
-        jwtHandler2 = new JwtHandler(Algorithm.HMAC256("foobar"));
-        jwtHandler3 = new JwtHandler(Algorithm.HMAC256("secret"));
+        jwtHandler1 = new JwtHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
+        jwtHandler2 = new JwtHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
+        jwtHandler3 = new JwtHandler(jwtConfiguration, Algorithm.HMAC256("secret"));
         account.setId(UUID.randomUUID());
         account.setName("foobar");
         account.setProperties(new HashMap<>());
