@@ -80,4 +80,8 @@ public class AuthService {
         return jwtHandler.generateJwt(account);
     }
 
+    public String generateVisitorJwt(String name, String ip) {
+        return jwtHandler.generateVisitorJwt(name, ip);
+    }
+
 }
