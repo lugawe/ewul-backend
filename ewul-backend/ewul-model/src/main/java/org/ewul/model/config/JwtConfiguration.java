@@ -2,6 +2,7 @@ package org.ewul.model.config;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.UUID;
@@ -17,7 +18,7 @@ public class JwtConfiguration implements Serializable {
     private String issuer = "ewul";
 
     @Valid
-    @NotEmpty
+    @NotNull
     private Duration lifetime = Duration.ofDays(14);
 
     public JwtConfiguration() {
