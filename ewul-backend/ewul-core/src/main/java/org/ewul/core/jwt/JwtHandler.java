@@ -9,6 +9,7 @@ import com.auth0.jwt.interfaces.Verification;
 import org.ewul.core.util.AccountUtils;
 import org.ewul.core.util.MapUtils;
 import org.ewul.model.BasicUser;
+import org.ewul.model.Roles;
 import org.ewul.model.User;
 import org.ewul.model.config.CoreConfiguration;
 import org.ewul.model.config.JwtConfiguration;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
@@ -294,6 +296,30 @@ public class JwtHandler {
         builder.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfiguration.getLifetime().toMillis()));
 
         builder.withAccount(account);
+
+        return builder.build(algorithm);
+    }
+
+    public String generateVisitorJwt(String name, String ip) {
+
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        if (ip == null) {
+            throw new NullPointerException("ip");
+        }
+
+        Builder builder = new Builder();
+
+        builder.withIssuer(jwtConfiguration.getIssuer());
+        builder.withExpiresAt(new Date(System.currentTimeMillis() + Duration.ofHours(6).toMillis()));
+
+        builder.withAuthId(UUID.randomUUID());
+        builder.withAuthName(name);
+        builder.withRole(Roles.VISITOR);
+        builder.withRole(Roles.READ);
+        builder.withProperty("visitor", "true");
+        builder.withProperty("ip", ip);
 
         return builder.build(algorithm);
     }
