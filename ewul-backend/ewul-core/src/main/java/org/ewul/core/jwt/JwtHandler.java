@@ -268,6 +268,7 @@ public class JwtHandler {
             if (map == null || map.isEmpty()) {
                 map = Collections.emptyMap();
             }
+            map = MapUtils.sortedMap(Comparator.naturalOrder(), map);
             Map<String, String> properties = Collections.unmodifiableMap(MapUtils.toStringValueMap(map));
 
             log.debug("jwt decoded: {}", authId);
