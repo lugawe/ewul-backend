@@ -24,7 +24,7 @@
         <logback.version>1.2.5</logback.version>
         <!-- core -->
         <auth0-jwt.version>3.18.2</auth0-jwt.version>
-        <guava.version>31.0-jre</guava.version>
+        <guava.version>31.0.1-jre</guava.version>
         <guice.version>5.0.1</guice.version>
         <querydsl.version>5.0.0</querydsl.version>
         <jackson.version>2.12.4</jackson.version>
