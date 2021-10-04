@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class BasicUser implements User {
+public class BasicUser implements User, Comparable<BasicUser> {
 
     private UUID id;
     private String name;
@@ -20,6 +20,20 @@ public class BasicUser implements User {
         this.name = name;
         this.roles = roles;
         this.properties = properties;
+    }
+
+    @Override
+    public int compareTo(BasicUser other) {
+        Objects.requireNonNull(other);
+        if (this.name == null && other.name == null) {
+            return 0;
+        } else if (this.name == null) {
+            return -1;
+        } else if (other.name == null) {
+            return 1;
+        } else {
+            return this.name.compareTo(other.name);
+        }
     }
 
     @Override
