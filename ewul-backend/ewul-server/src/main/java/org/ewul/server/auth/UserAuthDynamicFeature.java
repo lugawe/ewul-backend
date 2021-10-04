@@ -25,7 +25,7 @@ public class UserAuthDynamicFeature extends AuthDynamicFeature {
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
     }
 
-    public static ContainerRequestFilter buildFilter(UserAuthenticator authenticator, UserAuthorizer authorizer) {
+    private static ContainerRequestFilter buildFilter(UserAuthenticator authenticator, UserAuthorizer authorizer) {
         if (authenticator == null) {
             throw new NullPointerException("authenticator");
         }

@@ -1,6 +1,5 @@
 package org.ewul.server.auth;
 
-import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import org.ewul.core.jwt.JwtHandler;
 import org.ewul.model.User;
@@ -25,7 +24,7 @@ public class UserAuthenticator implements Authenticator<String, User> {
     }
 
     @Override
-    public Optional<User> authenticate(String token) throws AuthenticationException {
+    public Optional<User> authenticate(String token) {
         try {
             User user = jwtHandler.decode(token);
             if (user == null || user.getId() == null) {

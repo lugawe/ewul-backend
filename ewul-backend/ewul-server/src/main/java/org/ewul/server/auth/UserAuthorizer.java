@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import javax.ws.rs.container.ContainerRequestContext;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
 @Singleton
 public class UserAuthorizer implements Authorizer<User> {
@@ -26,7 +27,7 @@ public class UserAuthorizer implements Authorizer<User> {
         if (user == null || role == null) {
             return false;
         }
-        return emptyIfNull(user.getRoles()).stream().anyMatch(r -> r.equals(role));
+        return emptyIfNull(user.getRoles()).stream().filter(Objects::nonNull).anyMatch(r -> r.equals(role));
     }
 
     @Override
