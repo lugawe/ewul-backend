@@ -6,6 +6,31 @@ import java.util.*;
 
 public final class MapUtils {
 
+    static class ToStringTransformer<K, V> implements Maps.EntryTransformer<K, V, String> {
+
+        static final Lazy<ToStringTransformer<?, ?>> instance = Lazy.of(ToStringTransformer::new);
+
+        ToStringTransformer() {
+        }
+
+        @Override
+        public String transformEntry(K key, V value) {
+            if (value == null) {
+                throw new NullPointerException("value is null");
+            }
+            if (value instanceof String) {
+                return (String) value;
+            }
+            return value.toString();
+        }
+
+        @SuppressWarnings("unchecked")
+        static <K, V> ToStringTransformer<K, V> getInstance() {
+            return (ToStringTransformer<K, V>) instance.get();
+        }
+
+    }
+
     private MapUtils() {
     }
 
@@ -21,11 +46,12 @@ public final class MapUtils {
         return result;
     }
 
-    public static <V> Map<String, String> toStringValueMap(Map<String, V> map) {
+    public static <K, V> Map<K, String> toStringValueMap(Map<K, V> map) {
         if (map == null) {
             throw new NullPointerException("param map");
         }
-        return Maps.transformEntries(map, (key, value) -> Objects.requireNonNull(value).toString());
+        Map<K, String> view = Maps.transformEntries(map, ToStringTransformer.getInstance());
+        return new LinkedHashMap<>(view);
     }
 
 }
