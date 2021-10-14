@@ -66,9 +66,9 @@ public class AuthService {
                 update(account);
                 return Optional.of(account);
             }
+            log.info("invalid login attempt: {}", email);
         }
 
-        log.info("invalid login attempt: {}", email);
         return Optional.empty();
     }
 
