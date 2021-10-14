@@ -1,20 +1,16 @@
 package org.ewul.model.request;
 
+import javax.validation.constraints.NotEmpty;
+
 public class LoginRequest {
 
-    private String token;
+    @NotEmpty
     private String email;
+
+    @NotEmpty
     private String password;
 
     public LoginRequest() {
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public String getEmail() {
