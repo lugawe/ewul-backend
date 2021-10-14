@@ -7,20 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Objects;
 
-@Singleton
 public class HibernateHandler implements EntityDataHandler {
 
     private static final Logger log = LoggerFactory.getLogger(HibernateHandler.class);
 
     private final SessionFactory sessionFactory;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Inject
     public HibernateHandler(SessionFactory sessionFactory) {
@@ -34,11 +27,12 @@ public class HibernateHandler implements EntityDataHandler {
 
     @Override
     public Session provide() {
-        log.debug("provide");
-        if (entityManager == null) {
-            throw new NullPointerException("PersistenceContext: entity manager is null");
+        Session session = sessionFactory.getCurrentSession();
+        if (session == null) {
+            log.error("no session provided: {}", sessionFactory);
+            throw new NullPointerException("no session provided");
         }
-        return entityManager.unwrap(Session.class);
+        return session.unwrap(Session.class);
     }
 
     @Override
