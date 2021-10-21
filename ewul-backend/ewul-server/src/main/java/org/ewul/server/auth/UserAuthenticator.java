@@ -35,8 +35,4 @@ public class UserAuthenticator implements Authenticator<String, User> {
         }
     }
 
-    public JwtHandler getJwtHandler() {
-        return jwtHandler;
-    }
-
 }
