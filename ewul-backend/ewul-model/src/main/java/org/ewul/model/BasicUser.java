@@ -1,21 +1,21 @@
 package org.ewul.model;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 public class BasicUser implements User, Comparable<BasicUser> {
 
     private UUID id;
     private String name;
-    private Collection<String> roles;
+    private Set<String> roles;
     private Map<String, String> properties;
 
     public BasicUser() {
     }
 
-    public BasicUser(UUID id, String name, Collection<String> roles, Map<String, String> properties) {
+    public BasicUser(UUID id, String name, Set<String> roles, Map<String, String> properties) {
         this.id = id;
         this.name = name;
         this.roles = roles;
@@ -73,11 +73,11 @@ public class BasicUser implements User, Comparable<BasicUser> {
     }
 
     @Override
-    public Collection<String> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<String> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
 

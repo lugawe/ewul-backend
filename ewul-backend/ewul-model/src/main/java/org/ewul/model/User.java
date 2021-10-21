@@ -11,7 +11,7 @@ public interface User extends Principal, Serializable {
     @Override
     String getName();
 
-    Collection<String> getRoles();
+    Set<String> getRoles();
 
     Map<String, String> getProperties();
 

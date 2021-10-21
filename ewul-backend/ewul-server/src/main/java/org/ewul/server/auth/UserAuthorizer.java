@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.container.ContainerRequestContext;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 
 @Singleton
 public class UserAuthorizer implements Authorizer<User> {
@@ -18,8 +18,8 @@ public class UserAuthorizer implements Authorizer<User> {
     public UserAuthorizer() {
     }
 
-    protected Collection<String> emptyIfNull(Collection<String> collection) {
-        return collection != null ? collection : Collections.emptySet();
+    protected Set<String> emptyIfNull(Set<String> set) {
+        return set != null ? set : Collections.emptySet();
     }
 
     @Override

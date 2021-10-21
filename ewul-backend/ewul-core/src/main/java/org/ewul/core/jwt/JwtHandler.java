@@ -34,7 +34,7 @@ public class JwtHandler {
 
         private UUID authId;
         private String authName;
-        private Collection<String> roles;
+        private Set<String> roles;
         private Map<String, String> properties;
 
         private String issuer;
@@ -44,7 +44,7 @@ public class JwtHandler {
         public Builder() {
         }
 
-        private Collection<String> roles() {
+        private Set<String> roles() {
             if (this.roles == null) {
                 this.roles = new LinkedHashSet<>();
             }
@@ -84,7 +84,7 @@ public class JwtHandler {
             return this;
         }
 
-        public Builder withRoles(Collection<String> roles, boolean append) {
+        public Builder withRoles(Set<String> roles, boolean append) {
             if (append) {
                 if (roles != null) {
                     this.roles().addAll(roles);
@@ -95,7 +95,7 @@ public class JwtHandler {
             return this;
         }
 
-        public Builder withRoles(Collection<String> roles) {
+        public Builder withRoles(Set<String> roles) {
             return this.withRoles(roles, false);
         }
 
@@ -262,7 +262,7 @@ public class JwtHandler {
             if (list == null || list.isEmpty()) {
                 list = Collections.emptyList();
             }
-            Collection<String> roles = Collections.unmodifiableList(list);
+            Set<String> roles = Collections.unmodifiableSet(new LinkedHashSet<>(list));
 
             Map<String, Object> map = jwt.getClaim(CLAIM_PROPERTIES).asMap();
             if (map == null || map.isEmpty()) {
