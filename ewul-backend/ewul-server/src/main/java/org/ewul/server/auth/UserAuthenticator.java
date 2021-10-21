@@ -7,11 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Objects;
 import java.util.Optional;
 
-@Singleton
 public class UserAuthenticator implements Authenticator<String, User> {
 
     private static final Logger log = LoggerFactory.getLogger(UserAuthenticator.class);
@@ -30,7 +28,7 @@ public class UserAuthenticator implements Authenticator<String, User> {
             if (user == null || user.getId() == null) {
                 throw new IllegalStateException("invalid jwt token");
             }
-            log.info("user has successfully authenticated: {}", user);
+            log.info("user {} has successfully authenticated", user);
             return Optional.of(user);
         } catch (Exception ignored) {
             return Optional.empty();
