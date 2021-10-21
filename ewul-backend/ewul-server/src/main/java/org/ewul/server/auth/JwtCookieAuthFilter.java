@@ -20,6 +20,7 @@ public class JwtCookieAuthFilter extends AuthFilter<String, User> {
 
     public static class Builder extends AuthFilterBuilder<String, User, JwtCookieAuthFilter> {
 
+        @Inject
         public Builder() {
         }
 

@@ -16,12 +16,12 @@ public final class MapUtils {
         @Override
         public String transformEntry(K key, V value) {
             if (value == null) {
-                throw new NullPointerException("value is null");
-            }
-            if (value instanceof String) {
+                return null;
+            } else if (value instanceof String) {
                 return (String) value;
+            } else {
+                return value.toString();
             }
-            return value.toString();
         }
 
         @SuppressWarnings("unchecked")
