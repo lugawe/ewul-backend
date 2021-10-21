@@ -27,7 +27,7 @@ public class UserAuthorizer implements Authorizer<User> {
 
     @Override
     public boolean authorize(User user, String role, @Nullable ContainerRequestContext context) {
-        if (user == null || role == null || (context != null && requestContextChecker().test(context))) {
+        if (user == null || role == null || (context != null && !requestContextChecker().test(context))) {
             return false;
         }
         Collection<String> roles = CollectionUtils.emptyIfNull(user.getRoles());
