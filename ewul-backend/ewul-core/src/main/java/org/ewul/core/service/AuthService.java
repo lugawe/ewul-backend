@@ -47,6 +47,10 @@ public class AuthService {
         account.setLastAccess(LocalDateTime.now());
     }
 
+    public Optional<UserAccount> register(String email, String name, String password) {
+        return Optional.empty();
+    }
+
     public Optional<UserAccount> login(String email, String password, Predicate<UserAccount> filter) {
 
         if (email == null || email.isEmpty()) {
