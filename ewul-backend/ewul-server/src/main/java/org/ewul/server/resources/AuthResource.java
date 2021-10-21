@@ -4,13 +4,16 @@ import org.ewul.core.service.AuthService;
 import org.ewul.model.db.UserAccount;
 import org.ewul.model.request.LoginRequest;
 import org.ewul.model.request.RegisterRequest;
+import org.ewul.server.auth.JwtCookie;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+import java.time.Duration;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -54,7 +57,10 @@ public class AuthResource {
             throw new WebApplicationException(Response.status(401).build());
         }
 
-        return Response.ok().build();
+        String jwt = authService.generateJwt(account.get());
+        NewCookie authCookie = JwtCookie.createDefaultCookie(jwt, Duration.ofDays(30));
+
+        return Response.ok().cookie(authCookie).build();
     }
 
 }

@@ -16,7 +16,7 @@ public final class JwtCookie {
     private JwtCookie() {
     }
 
-    public static String extractCookie(Map<String, Cookie> cookies) throws IllegalArgumentException {
+    public static String extractCookieValue(Map<String, Cookie> cookies) throws IllegalArgumentException {
 
         if (cookies == null || cookies.size() < 1) {
             throw new IllegalArgumentException("no cookies provided");
