@@ -57,8 +57,13 @@ public class AuthResource {
             throw new WebApplicationException(Response.status(401).build());
         }
 
-        String jwt = authService.generateJwt(account.get());
-        NewCookie authCookie = JwtCookie.createDefaultCookie(jwt, Duration.ofDays(30));
+        NewCookie authCookie;
+        try {
+            String jwt = authService.generateJwt(account.get());
+            authCookie = JwtCookie.createDefaultCookie(jwt, Duration.ofDays(30));
+        } catch (Exception ex) {
+            throw new WebApplicationException(ex, Response.status(401).build());
+        }
 
         return Response.ok().cookie(authCookie).build();
     }
