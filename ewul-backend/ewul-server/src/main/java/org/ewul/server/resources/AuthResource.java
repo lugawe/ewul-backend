@@ -1,5 +1,6 @@
 package org.ewul.server.resources;
 
+import io.dropwizard.hibernate.UnitOfWork;
 import org.ewul.core.service.AuthService;
 import org.ewul.model.db.UserAccount;
 import org.ewul.model.request.LoginRequest;
@@ -36,6 +37,7 @@ public class AuthResource {
         return true;
     }
 
+    @UnitOfWork
     @POST
     @Path("/register")
     public Response register(@Valid RegisterRequest request) {
@@ -48,6 +50,7 @@ public class AuthResource {
         return Response.ok().build();
     }
 
+    @UnitOfWork
     @POST
     @Path("/login")
     public Response login(@Valid LoginRequest request) {
