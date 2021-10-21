@@ -30,7 +30,7 @@
         <jackson.version>2.12.4</jackson.version>
         <!-- server -->
         <dropwizard.version>2.0.25</dropwizard.version>
-        <dropwizard-guicey.version>5.3.0</dropwizard-guicey.version>
+        <dropwizard-guicey.version>5.4.0</dropwizard-guicey.version>
         <!-- db -->
         <h2.version>1.4.200</h2.version>
         <!-- javax -->
