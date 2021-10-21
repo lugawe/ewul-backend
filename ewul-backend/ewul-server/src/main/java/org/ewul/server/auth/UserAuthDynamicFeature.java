@@ -13,7 +13,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class UserAuthDynamicFeature extends AuthDynamicFeature {
 
-    public static final String DEFAULT_PREFIX = "JwtCookie";
+    public static final String DEFAULT_PREFIX = "AuthUser";
 
     @Inject
     public UserAuthDynamicFeature(Environment environment,
