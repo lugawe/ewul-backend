@@ -20,19 +20,18 @@ public class HibernateHandler implements EntityDataHandler {
         this.sessionFactory = Objects.requireNonNull(sessionFactory);
     }
 
-    @Override
-    public HibernateQueryFactory createQueryFactory() {
-        return new HibernateQueryFactory(this::provide);
-    }
-
-    @Override
-    public Session provide() {
+    protected Session provide() {
         Session session = sessionFactory.getCurrentSession();
         if (session == null) {
             log.error("no session provided: {}", sessionFactory);
             throw new NullPointerException("no session provided");
         }
         return session.unwrap(Session.class);
+    }
+
+    @Override
+    public HibernateQueryFactory createQueryFactory() {
+        return new HibernateQueryFactory(this::provide);
     }
 
     @Override

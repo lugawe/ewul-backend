@@ -38,7 +38,7 @@ public class HibernateQueryFactory extends com.querydsl.jpa.hibernate.HibernateQ
     }
 
     @Override
-    public <T extends DbModel> UUID insert(T entity) {
+    public <T> UUID insert(T entity) {
         return (UUID) session.get().save(entity);
     }
 
