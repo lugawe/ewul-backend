@@ -17,17 +17,15 @@ public class UserAuthorizer implements Authorizer<User> {
 
     private static final Logger log = LoggerFactory.getLogger(UserAuthorizer.class);
 
+    protected Predicate<ContainerRequestContext> requestContextChecker = ctx -> true;
+
     @Inject
     public UserAuthorizer() {
     }
 
-    protected Predicate<ContainerRequestContext> requestContextChecker() {
-        return ctx -> true;
-    }
-
     @Override
     public boolean authorize(User user, String role, @Nullable ContainerRequestContext context) {
-        if (user == null || role == null || (context != null && !requestContextChecker().test(context))) {
+        if (user == null || role == null || (context != null && !requestContextChecker.test(context))) {
             return false;
         }
         Collection<String> roles = CollectionUtils.emptyIfNull(user.getRoles());
