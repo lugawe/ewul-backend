@@ -2,10 +2,10 @@ package org.ewul.core.entity;
 
 import com.querydsl.jpa.JPQLQueryFactory;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 public interface EntityQueryFactory extends JPQLQueryFactory {
 
-    <T> UUID insert(T entity);
+    <T> Serializable insert(T entity);
 
 }

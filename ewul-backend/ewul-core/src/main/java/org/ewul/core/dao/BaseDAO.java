@@ -9,6 +9,7 @@ import org.ewul.core.entity.EntityDataHandler;
 import org.ewul.core.entity.EntityQueryFactory;
 import org.ewul.model.db.DbModel;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,7 +34,7 @@ public abstract class BaseDAO<T extends DbModel> {
         return factory().insert(path);
     }
 
-    public UUID insert(T entity) {
+    public Serializable insert(T entity) {
         if (entity == null) {
             throw new NullPointerException("param entity");
         }

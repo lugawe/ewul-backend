@@ -3,13 +3,12 @@ package org.ewul.server.hibernate;
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPQLTemplates;
 import org.ewul.core.entity.EntityQueryFactory;
-import org.ewul.model.db.DbModel;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 public class HibernateQueryFactory extends com.querydsl.jpa.hibernate.HibernateQueryFactory
@@ -38,8 +37,11 @@ public class HibernateQueryFactory extends com.querydsl.jpa.hibernate.HibernateQ
     }
 
     @Override
-    public <T> UUID insert(T entity) {
-        return (UUID) session.get().save(entity);
+    public <T> Serializable insert(T entity) {
+        if (entity == null) {
+            throw new NullPointerException("param entity");
+        }
+        return session.get().save(entity);
     }
 
 }
