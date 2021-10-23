@@ -46,6 +46,10 @@ public final class MapUtils {
         return result;
     }
 
+    public static <K, V> SortedMap<K, V> sortedMap(Comparator<K> comparator) {
+        return sortedMap(comparator, null);
+    }
+
     public static <K, V> Map<K, String> toStringValueMap(Map<K, V> map) {
         if (map == null) {
             throw new NullPointerException("param map");

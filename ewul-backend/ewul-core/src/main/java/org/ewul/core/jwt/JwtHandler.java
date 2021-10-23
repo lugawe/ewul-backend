@@ -6,13 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.auth0.jwt.interfaces.Verification;
-import org.ewul.core.util.AccountUtils;
 import org.ewul.core.util.MapUtils;
 import org.ewul.model.BasicUser;
 import org.ewul.model.User;
-import org.ewul.model.config.CoreConfiguration;
-import org.ewul.model.config.JwtConfiguration;
-import org.ewul.model.db.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,14 +69,6 @@ public class JwtHandler {
             this.withAuthName(user.getName());
             this.withRoles(user.getRoles(), true);
             this.withProperties(user.getProperties(), true);
-            return this;
-        }
-
-        public Builder withAccount(Account account) {
-            this.withAuthId(account.getId());
-            this.withAuthName(account.getName());
-            this.withRoles(AccountUtils.roles(account), true);
-            this.withProperties(account.getProperties(), true);
             return this;
         }
 
@@ -207,23 +195,16 @@ public class JwtHandler {
                 throw new NullPointerException("param jwtHandler");
             }
 
-            return this.build(jwtHandler.getAlgorithm());
+            return this.build(jwtHandler.algorithm);
         }
 
     }
 
-    private final JwtConfiguration jwtConfiguration;
-    private final Algorithm algorithm;
-
-    public JwtHandler(JwtConfiguration jwtConfiguration, Algorithm algorithm) {
-        this.jwtConfiguration = Objects.requireNonNull(jwtConfiguration);
-        this.algorithm = Objects.requireNonNull(algorithm);
-    }
+    protected final Algorithm algorithm;
 
     @Inject
-    public JwtHandler(CoreConfiguration configuration) {
-        this.jwtConfiguration = Objects.requireNonNull(configuration.getJwtConfiguration());
-        this.algorithm = Algorithm.HMAC512(this.jwtConfiguration.getSecret());
+    public JwtHandler(Algorithm algorithm) {
+        this.algorithm = Objects.requireNonNull(algorithm);
     }
 
     protected DecodedJWT getDecodedJWT(String token) {
@@ -234,8 +215,8 @@ public class JwtHandler {
 
         Verification verification = JWT.require(algorithm);
         verification.withClaimPresence(CLAIM_AUTH_ID);
-        JWTVerifier verifier = verification.build();
-        return verifier.verify(token);
+
+        return verification.build().verify(token);
     }
 
     public boolean isValid(String token) {
@@ -281,30 +262,6 @@ public class JwtHandler {
 
     public User decode(String token) {
         return decode(token, Objects::nonNull);
-    }
-
-    public String generateJwt(Account account) {
-
-        if (account == null) {
-            throw new NullPointerException("account");
-        }
-
-        Builder builder = new Builder();
-
-        builder.withIssuer(jwtConfiguration.getIssuer());
-        builder.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfiguration.getLifetime().toMillis()));
-
-        builder.withAccount(account);
-
-        return builder.build(algorithm);
-    }
-
-    public JwtConfiguration getJwtConfiguration() {
-        return jwtConfiguration;
-    }
-
-    public Algorithm getAlgorithm() {
-        return algorithm;
     }
 
 }

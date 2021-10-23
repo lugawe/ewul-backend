@@ -17,18 +17,18 @@ class JwtHandlerTest {
 
     static final JwtConfiguration jwtConfiguration = new JwtConfiguration();
 
-    static JwtHandler jwtHandler1;
-    static JwtHandler jwtHandler2;
+    static AccountJwtHandler jwtHandler1;
+    static AccountJwtHandler jwtHandler2;
 
-    static JwtHandler jwtHandler3;
+    static AccountJwtHandler jwtHandler3;
 
     static Account account = new Account();
 
     @BeforeAll
     static void init() {
-        jwtHandler1 = new JwtHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
-        jwtHandler2 = new JwtHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
-        jwtHandler3 = new JwtHandler(jwtConfiguration, Algorithm.HMAC256("secret"));
+        jwtHandler1 = new AccountJwtHandler(Algorithm.HMAC256("foobar"), jwtConfiguration);
+        jwtHandler2 = new AccountJwtHandler(Algorithm.HMAC256("foobar"), jwtConfiguration);
+        jwtHandler3 = new AccountJwtHandler(Algorithm.HMAC256("secret"), jwtConfiguration);
         account.setId(UUID.randomUUID());
         account.setName("foobar");
         account.setProperties(new HashMap<>());
@@ -38,10 +38,10 @@ class JwtHandlerTest {
     @Test
     void encode_decode_test() {
 
-        String token = new JwtHandler.Builder()
+        String token = new AccountJwtHandler.Builder()
+                .withAccount(account)
                 .withIssuer("test1")
                 .withProperty("prop1", "test!!!")
-                .withAccount(account)
                 .withRole("role1")
                 .withProperty("prop2", "!!!test")
                 .withExpiresAt(2, TimeUnit.DAYS)

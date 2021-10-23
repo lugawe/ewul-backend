@@ -2,7 +2,7 @@ package org.ewul.core.service;
 
 import org.ewul.core.dao.PasswordDAO;
 import org.ewul.core.dao.UserAccountDAO;
-import org.ewul.core.jwt.JwtHandler;
+import org.ewul.core.jwt.AccountJwtHandler;
 import org.ewul.model.config.CoreConfiguration;
 import org.ewul.model.db.Password;
 import org.ewul.model.db.UserAccount;
@@ -24,18 +24,18 @@ public class AuthService {
     protected final CoreConfiguration configuration;
     protected final UserAccountDAO userAccountDAO;
     protected final PasswordDAO passwordDAO;
-    protected final JwtHandler jwtHandler;
+    protected final AccountJwtHandler accountJwtHandler;
 
     @Inject
     public AuthService(CoreConfiguration configuration,
                        UserAccountDAO userAccountDAO,
                        PasswordDAO passwordDAO,
-                       JwtHandler jwtHandler) {
+                       AccountJwtHandler accountJwtHandler) {
 
         this.configuration = Objects.requireNonNull(configuration);
         this.userAccountDAO = Objects.requireNonNull(userAccountDAO);
         this.passwordDAO = Objects.requireNonNull(passwordDAO);
-        this.jwtHandler = Objects.requireNonNull(jwtHandler);
+        this.accountJwtHandler = Objects.requireNonNull(accountJwtHandler);
     }
 
     protected boolean checkPassword(String plain, Password password) {
@@ -81,7 +81,7 @@ public class AuthService {
     }
 
     public String generateJwt(UserAccount account) {
-        return jwtHandler.generateJwt(account);
+        return accountJwtHandler.generateAccountJwt(account);
     }
 
 }

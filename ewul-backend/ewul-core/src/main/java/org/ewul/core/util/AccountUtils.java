@@ -12,7 +12,7 @@ public final class AccountUtils {
     private AccountUtils() {
     }
 
-    public static Set<String> roles(Account account) {
+    public static Set<String> getRoles(Account account) {
 
         if (account == null) {
             throw new NullPointerException("account");
