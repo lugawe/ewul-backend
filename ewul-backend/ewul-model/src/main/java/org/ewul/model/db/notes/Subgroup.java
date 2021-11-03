@@ -34,7 +34,7 @@ public class Subgroup implements Comparable<Subgroup>, DbModel {
 
     @OrderBy
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_notes__subgroup_children"))
+    @JoinColumn(name = "parent", foreignKey = @ForeignKey(name = "fk_notes__subgroup_children"))
     private SortedSet<Subgroup> children;
 
     public Subgroup() {

@@ -26,7 +26,7 @@ public class Category implements DbModel {
 
     @OrderBy
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_notes__category_group"))
+    @JoinColumn(name = "category", foreignKey = @ForeignKey(name = "fk_notes__category_group"))
     private SortedSet<Subgroup> subgroups;
 
     public Category() {
