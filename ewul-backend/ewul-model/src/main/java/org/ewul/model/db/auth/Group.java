@@ -1,12 +1,14 @@
-package org.ewul.model.db;
+package org.ewul.model.db.auth;
+
+import org.ewul.model.db.DbModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
-@Table(name = "membership")
-public class Membership implements Iterable<Role>, DbModel {
+@Table(name = "auth_group")
+public class Group implements Iterable<Role>, DbModel {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -19,21 +21,21 @@ public class Membership implements Iterable<Role>, DbModel {
 
     @ManyToMany
     @JoinTable(
-            name = "membership_role",
-            joinColumns = @JoinColumn(name = "membership", foreignKey = @ForeignKey(name = "fk_membership_role_membership")),
-            inverseJoinColumns = @JoinColumn(name = "role", foreignKey = @ForeignKey(name = "fk_membership_role_role"))
+            name = "auth_group_role",
+            joinColumns = @JoinColumn(name = "group", foreignKey = @ForeignKey(name = "fk_auth__group_role_group")),
+            inverseJoinColumns = @JoinColumn(name = "role", foreignKey = @ForeignKey(name = "fk_auth__group_role_role"))
     )
     private List<Role> roles;
 
-    public Membership() {
+    public Group() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Membership)) return false;
-        Membership membership = (Membership) o;
-        return Objects.equals(id, membership.id) && Objects.equals(name, membership.name);
+        if (!(o instanceof Group)) return false;
+        Group group = (Group) o;
+        return Objects.equals(id, group.id) && Objects.equals(name, group.name);
     }
 
     @Override

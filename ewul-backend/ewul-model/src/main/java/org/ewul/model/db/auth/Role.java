@@ -1,4 +1,6 @@
-package org.ewul.model.db;
+package org.ewul.model.db.auth;
+
+import org.ewul.model.db.DbModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -6,8 +8,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "password")
-public class Password implements DbModel {
+@Table(name = "auth_role")
+public class Role implements DbModel {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -15,23 +17,23 @@ public class Password implements DbModel {
     private UUID id;
 
     @NotNull
-    @Column(name = "hash")
-    private String hash;
+    @Column(name = "name")
+    private String name;
 
-    public Password() {
+    public Role() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Password)) return false;
-        Password password = (Password) o;
-        return Objects.equals(id, password.id);
+        if (!(o instanceof Role)) return false;
+        Role role = (Role) o;
+        return Objects.equals(id, role.id) && Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name);
     }
 
     @Override
@@ -43,12 +45,12 @@ public class Password implements DbModel {
         this.id = id;
     }
 
-    public String getHash() {
-        return hash;
+    public String getName() {
+        return name;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

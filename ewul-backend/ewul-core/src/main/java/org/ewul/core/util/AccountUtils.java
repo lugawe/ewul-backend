@@ -1,8 +1,8 @@
 package org.ewul.core.util;
 
-import org.ewul.model.db.Account;
-import org.ewul.model.db.Membership;
-import org.ewul.model.db.Role;
+import org.ewul.model.db.auth.Account;
+import org.ewul.model.db.auth.Group;
+import org.ewul.model.db.auth.Role;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,15 +12,15 @@ public final class AccountUtils {
     private AccountUtils() {
     }
 
-    public static Set<String> getRoles(Account account) {
+    public static Set<String> getRolesAsString(Account account) {
 
         if (account == null) {
             throw new NullPointerException("account");
         }
 
-        Membership membership = account.getMembership();
-        if (membership != null) {
-            List<Role> roles = membership.getRoles();
+        Group group = account.getGroup();
+        if (group != null) {
+            List<Role> roles = group.getRoles();
             if (roles != null) {
                 Set<String> result = roles.stream()
                         .filter(Objects::nonNull)

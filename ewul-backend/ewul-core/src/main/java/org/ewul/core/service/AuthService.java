@@ -1,11 +1,11 @@
 package org.ewul.core.service;
 
-import org.ewul.core.dao.PasswordDAO;
-import org.ewul.core.dao.UserAccountDAO;
+import org.ewul.core.dao.auth.PasswordDAO;
+import org.ewul.core.dao.auth.AccountDAO;
 import org.ewul.core.jwt.AccountJwtHandler;
 import org.ewul.model.config.CoreConfiguration;
-import org.ewul.model.db.Password;
-import org.ewul.model.db.UserAccount;
+import org.ewul.model.db.auth.Account;
+import org.ewul.model.db.auth.Password;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,18 +22,18 @@ public class AuthService {
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     protected final CoreConfiguration configuration;
-    protected final UserAccountDAO userAccountDAO;
+    protected final AccountDAO accountDAO;
     protected final PasswordDAO passwordDAO;
     protected final AccountJwtHandler accountJwtHandler;
 
     @Inject
     public AuthService(CoreConfiguration configuration,
-                       UserAccountDAO userAccountDAO,
+                       AccountDAO accountDAO,
                        PasswordDAO passwordDAO,
                        AccountJwtHandler accountJwtHandler) {
 
         this.configuration = Objects.requireNonNull(configuration);
-        this.userAccountDAO = Objects.requireNonNull(userAccountDAO);
+        this.accountDAO = Objects.requireNonNull(accountDAO);
         this.passwordDAO = Objects.requireNonNull(passwordDAO);
         this.accountJwtHandler = Objects.requireNonNull(accountJwtHandler);
     }
@@ -43,15 +43,15 @@ public class AuthService {
         return true;
     }
 
-    protected void update(UserAccount account) {
+    protected void update(Account account) {
         account.setLastAccess(LocalDateTime.now());
     }
 
-    public Optional<UserAccount> register(String email, String name, String password) {
+    public Optional<Account> register(String email, String name, String password) {
         return Optional.empty();
     }
 
-    public Optional<UserAccount> login(String email, String password, Predicate<UserAccount> filter) {
+    public Optional<Account> login(String email, String password, Predicate<Account> filter) {
 
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("param email");
@@ -63,9 +63,9 @@ public class AuthService {
             throw new IllegalArgumentException("param filter");
         }
 
-        Optional<UserAccount> _account = userAccountDAO.getByEmail(email);
+        Optional<Account> _account = accountDAO.getByEmail(email);
         if (_account.isPresent()) {
-            UserAccount account = _account.get();
+            Account account = _account.get();
             if (filter.test(account) && checkPassword(password, account.getPassword())) {
                 update(account);
                 return Optional.of(account);
@@ -76,11 +76,11 @@ public class AuthService {
         return Optional.empty();
     }
 
-    public Optional<UserAccount> login(String email, String password) {
+    public Optional<Account> login(String email, String password) {
         return login(email, password, Objects::nonNull);
     }
 
-    public String generateJwt(UserAccount account) {
+    public String generateJwt(Account account) {
         return accountJwtHandler.generateAccountJwt(account);
     }
 

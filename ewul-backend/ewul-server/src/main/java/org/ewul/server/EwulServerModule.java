@@ -5,7 +5,11 @@ import io.dropwizard.hibernate.HibernateBundle;
 import org.ewul.core.entity.EntityDataHandler;
 import org.ewul.core.util.Lazy;
 import org.ewul.model.config.CoreConfiguration;
-import org.ewul.model.db.*;
+import org.ewul.model.db.DbModel;
+import org.ewul.model.db.auth.Account;
+import org.ewul.model.db.auth.Group;
+import org.ewul.model.db.auth.Password;
+import org.ewul.model.db.auth.Role;
 import org.ewul.server.hibernate.HibernateHandler;
 import org.hibernate.SessionFactory;
 import ru.vyarus.dropwizard.guice.module.support.DropwizardAwareModule;
@@ -16,9 +20,8 @@ public class EwulServerModule extends DropwizardAwareModule<EwulServerConfig> {
 
         public static final Class<?>[] ENTITIES = {
                 Account.class,
-                UserAccount.class,
+                Group.class,
                 Password.class,
-                Membership.class,
                 Role.class
         };
 

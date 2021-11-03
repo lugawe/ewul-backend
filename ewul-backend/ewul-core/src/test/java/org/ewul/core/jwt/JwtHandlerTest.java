@@ -3,7 +3,7 @@ package org.ewul.core.jwt;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.ewul.model.User;
 import org.ewul.model.config.JwtConfiguration;
-import org.ewul.model.db.Account;
+import org.ewul.model.db.auth.Account;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ class JwtHandlerTest {
         jwtHandler2 = new AccountJwtHandler(Algorithm.HMAC256("foobar"), jwtConfiguration);
         jwtHandler3 = new AccountJwtHandler(Algorithm.HMAC256("secret"), jwtConfiguration);
         account.setId(UUID.randomUUID());
-        account.setName("foobar");
+        account.setDisplayName("foobar");
         account.setProperties(new HashMap<>());
         account.getProperties().put("foo", "bar");
     }

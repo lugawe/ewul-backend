@@ -1,6 +1,7 @@
 package org.ewul.server.auth;
 
 import io.dropwizard.auth.Authenticator;
+import org.ewul.core.jwt.AccountJwtHandler;
 import org.ewul.core.jwt.JwtHandler;
 import org.ewul.model.User;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ public class UserAuthenticator implements Authenticator<String, User> {
     protected final JwtHandler jwtHandler;
 
     @Inject
-    public UserAuthenticator(JwtHandler jwtHandler) {
+    public UserAuthenticator(AccountJwtHandler jwtHandler) {
         this.jwtHandler = Objects.requireNonNull(jwtHandler);
     }
 

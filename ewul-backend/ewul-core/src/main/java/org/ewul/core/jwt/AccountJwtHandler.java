@@ -4,7 +4,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import org.ewul.core.util.AccountUtils;
 import org.ewul.model.config.CoreConfiguration;
 import org.ewul.model.config.JwtConfiguration;
-import org.ewul.model.db.Account;
+import org.ewul.model.db.auth.Account;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -20,7 +20,7 @@ public class AccountJwtHandler extends JwtHandler {
         public Builder withAccount(Account account) {
             this.withAuthId(account.getId());
             this.withAuthName(account.getName());
-            this.withRoles(AccountUtils.getRoles(account), true);
+            this.withRoles(AccountUtils.getRolesAsString(account), true);
             this.withProperties(account.getProperties(), true);
             return this;
         }
