@@ -22,8 +22,8 @@ public class Group implements Iterable<Role>, DbModel {
     @ManyToMany
     @JoinTable(
             name = "auth_group_role",
-            joinColumns = @JoinColumn(name = "group", foreignKey = @ForeignKey(name = "fk_auth__group_role_group")),
-            inverseJoinColumns = @JoinColumn(name = "role", foreignKey = @ForeignKey(name = "fk_auth__group_role_role"))
+            joinColumns = @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_auth__group_role_group")),
+            inverseJoinColumns = @JoinColumn(name = "auth_role", foreignKey = @ForeignKey(name = "fk_auth__group_role_role"))
     )
     private List<Role> roles;
 

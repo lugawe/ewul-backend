@@ -45,12 +45,12 @@ public class Account implements Comparable<Account>, Principal, DbModel {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "group", foreignKey = @ForeignKey(name = "fk_auth__account_group"))
+    @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_auth__account_group"))
     private Group group;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "password", foreignKey = @ForeignKey(name = "fk_auth__account_password"))
+    @JoinColumn(name = "auth_password", foreignKey = @ForeignKey(name = "fk_auth__account_password"))
     private Password password;
 
     @Transient
