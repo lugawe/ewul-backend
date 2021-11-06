@@ -8,12 +8,15 @@ import com.querydsl.jpa.JPQLQuery;
 import org.ewul.core.entity.EntityDataHandler;
 import org.ewul.core.entity.EntityQueryFactory;
 import org.ewul.model.db.DbModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 public abstract class BaseDAO<T extends DbModel> {
+
+    private static final Logger log = LoggerFactory.getLogger(BaseDAO.class);
 
     protected final Class<T> entityClass;
     protected final EntityDataHandler handler;
@@ -24,6 +27,7 @@ public abstract class BaseDAO<T extends DbModel> {
     }
 
     public final EntityQueryFactory factory() {
+        log.debug("{}: create factory", this);
         return handler.createQueryFactory();
     }
 
@@ -72,7 +76,7 @@ public abstract class BaseDAO<T extends DbModel> {
 
     @Override
     public String toString() {
-        return String.format("BaseDAO{ %s - %s }", entityClass.getSimpleName(), handler.getName());
+        return String.format("BaseDAO { %s - %s }", entityClass.getSimpleName(), handler.getName());
     }
 
     public final Class<T> getEntityClass() {
