@@ -41,10 +41,10 @@ public class Subgroup implements Comparable<Subgroup>, DbModel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Subgroup)) return false;
-        Subgroup subgroup = (Subgroup) o;
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Subgroup)) return false;
+        Subgroup subgroup = (Subgroup) other;
         return Objects.equals(id, subgroup.id) && Objects.equals(name, subgroup.name) &&
                 Objects.equals(color, subgroup.color) && Objects.equals(parent, subgroup.parent);
     }

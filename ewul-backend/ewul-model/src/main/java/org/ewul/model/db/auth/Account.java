@@ -60,10 +60,10 @@ public class Account implements Comparable<Account>, Principal, DbModel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Account)) return false;
-        Account account = (Account) o;
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Account)) return false;
+        Account account = (Account) other;
         return Objects.equals(id, account.id) && Objects.equals(displayName, account.displayName);
     }
 

@@ -1,6 +1,7 @@
 package org.ewul.model.db.notes;
 
 import org.ewul.model.db.DbModel;
+import org.ewul.model.db.auth.Account;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,25 +25,30 @@ public class Category implements DbModel {
     @Column(name = "description")
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "auth_account", foreignKey = @ForeignKey(name = "fk_notes__category_account"))
+    private Account account;
+
     @OrderBy
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "category", foreignKey = @ForeignKey(name = "fk_notes__category_group"))
+    @JoinColumn(name = "notes_category", foreignKey = @ForeignKey(name = "fk_notes__category_group"))
     private SortedSet<Subgroup> subgroups;
 
     public Category() {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Category)) return false;
-        Category category = (Category) o;
-        return Objects.equals(id, category.id) && Objects.equals(name, category.name);
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Category)) return false;
+        Category category = (Category) other;
+        return Objects.equals(id, category.id) && Objects.equals(name, category.name) &&
+                Objects.equals(account, category.account);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, account);
     }
 
     @Override
@@ -73,6 +79,14 @@ public class Category implements DbModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public SortedSet<Subgroup> getSubgroups() {

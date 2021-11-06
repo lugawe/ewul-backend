@@ -31,10 +31,10 @@ public class Group implements Iterable<Role>, DbModel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Group)) return false;
-        Group group = (Group) o;
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Group)) return false;
+        Group group = (Group) other;
         return Objects.equals(id, group.id) && Objects.equals(name, group.name);
     }
 

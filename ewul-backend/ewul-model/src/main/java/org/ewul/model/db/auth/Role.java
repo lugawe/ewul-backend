@@ -24,10 +24,10 @@ public class Role implements DbModel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Role)) return false;
-        Role role = (Role) o;
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Role)) return false;
+        Role role = (Role) other;
         return Objects.equals(id, role.id) && Objects.equals(name, role.name);
     }
 

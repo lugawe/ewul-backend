@@ -24,10 +24,10 @@ public class Password implements DbModel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Password)) return false;
-        Password password = (Password) o;
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Password)) return false;
+        Password password = (Password) other;
         return Objects.equals(id, password.id);
     }
 
