@@ -3,7 +3,7 @@ package org.ewul.model.config;
 import javax.validation.Valid;
 import java.io.Serializable;
 
-public class ActiveMQPoolConfig implements Serializable {
+public class ActiveMQPoolConfiguration implements Serializable {
 
     @Valid
     private Integer maxConnections;
@@ -38,7 +38,7 @@ public class ActiveMQPoolConfig implements Serializable {
     @Valid
     private Boolean useAnonymousProducers;
 
-    public ActiveMQPoolConfig() {
+    public ActiveMQPoolConfiguration() {
     }
 
     public Integer getMaxConnections() {

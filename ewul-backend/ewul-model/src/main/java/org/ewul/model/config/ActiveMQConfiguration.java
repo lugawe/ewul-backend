@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-public class ActiveMQConfig implements Serializable {
+public class ActiveMQConfiguration implements Serializable {
 
     @Valid
     @NotNull
@@ -20,9 +20,9 @@ public class ActiveMQConfig implements Serializable {
 
     @Valid
     @NotNull
-    private ActiveMQPoolConfig activeMQPoolConfig = new ActiveMQPoolConfig();
+    private ActiveMQPoolConfiguration activeMQPoolConfiguration = new ActiveMQPoolConfiguration();
 
-    public ActiveMQConfig() {
+    public ActiveMQConfiguration() {
     }
 
     public String getBrokerUrl() {
@@ -50,13 +50,13 @@ public class ActiveMQConfig implements Serializable {
     }
 
     @JsonProperty("pool")
-    public ActiveMQPoolConfig getActiveMQPoolConfig() {
-        return activeMQPoolConfig;
+    public ActiveMQPoolConfiguration getActiveMQPoolConfiguration() {
+        return activeMQPoolConfiguration;
     }
 
     @JsonProperty("pool")
-    public void setActiveMQPoolConfig(ActiveMQPoolConfig activeMQPoolConfig) {
-        this.activeMQPoolConfig = activeMQPoolConfig;
+    public void setActiveMQPoolConfiguration(ActiveMQPoolConfiguration activeMQPoolConfiguration) {
+        this.activeMQPoolConfiguration = activeMQPoolConfiguration;
     }
 
 }

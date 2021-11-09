@@ -12,7 +12,7 @@ public class CoreConfiguration implements Serializable {
 
     @Valid
     @NotNull
-    private ActiveMQConfig activeMQConfig = new ActiveMQConfig();
+    private ActiveMQConfiguration activeMQConfiguration = new ActiveMQConfiguration();
 
     @Valid
     @NotNull
@@ -22,13 +22,13 @@ public class CoreConfiguration implements Serializable {
     }
 
     @JsonProperty("activemq")
-    public ActiveMQConfig getActiveMQConfig() {
-        return activeMQConfig;
+    public ActiveMQConfiguration getActiveMQConfiguration() {
+        return activeMQConfiguration;
     }
 
     @JsonProperty("activemq")
-    public void setActiveMQConfig(ActiveMQConfig activeMQConfig) {
-        this.activeMQConfig = activeMQConfig;
+    public void setActiveMQConfiguration(ActiveMQConfiguration activeMQConfiguration) {
+        this.activeMQConfiguration = activeMQConfiguration;
     }
 
     @JsonProperty("jwt")
