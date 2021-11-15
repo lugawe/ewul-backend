@@ -67,7 +67,15 @@ public class Subgroup implements Comparable<Subgroup>, DbModel {
             return colorComparison < 0 ? -1 : 1;
         }
 
-        return this.parent.compareTo(other.parent);
+        if (this.parent == null && other.parent == null) {
+            return 0;
+        } else if (this.parent == null) {
+            return -1;
+        } else if (other.parent == null) {
+            return 1;
+        } else {
+            return this.parent.compareTo(other.parent);
+        }
     }
 
     @Override
