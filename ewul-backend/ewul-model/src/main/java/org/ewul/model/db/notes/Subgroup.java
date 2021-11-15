@@ -4,6 +4,7 @@ import org.ewul.model.db.DbModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.UUID;
@@ -25,6 +26,7 @@ public class Subgroup implements Comparable<Subgroup>, DbModel {
     private String description;
 
     @NotNull
+    @Pattern(regexp = "^#(?:[0-9a-fA-F]{3}){1,2}$", message = "invalid hex color format")
     @Column(name = "color")
     private String color = "#000000";
 
