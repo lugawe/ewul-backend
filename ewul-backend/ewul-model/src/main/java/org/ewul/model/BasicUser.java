@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-public class BasicUser implements User, Comparable<BasicUser> {
+public class BasicUser implements User {
 
     private UUID id;
     private String name;
@@ -20,20 +20,6 @@ public class BasicUser implements User, Comparable<BasicUser> {
         this.name = name;
         this.roles = roles;
         this.properties = properties;
-    }
-
-    @Override
-    public int compareTo(BasicUser other) {
-        Objects.requireNonNull(other);
-        if (this.name == null && other.name == null) {
-            return 0;
-        } else if (this.name == null) {
-            return -1;
-        } else if (other.name == null) {
-            return 1;
-        } else {
-            return this.name.compareTo(other.name);
-        }
     }
 
     @Override
