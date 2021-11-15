@@ -3,8 +3,8 @@ package org.ewul.server.resources;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.ewul.core.service.AuthService;
 import org.ewul.model.db.auth.Account;
-import org.ewul.model.request.LoginRequest;
-import org.ewul.model.request.RegisterRequest;
+import org.ewul.model.request.auth.LoginRequest;
+import org.ewul.model.request.auth.RegisterRequest;
 import org.ewul.server.auth.JwtCookie;
 
 import javax.annotation.security.PermitAll;
