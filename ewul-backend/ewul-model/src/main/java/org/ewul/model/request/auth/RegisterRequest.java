@@ -1,9 +1,11 @@
-package org.ewul.model.request;
+package org.ewul.model.request.auth;
+
+import org.ewul.model.request.Request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-public class RegisterRequest {
+public class RegisterRequest implements Request {
 
     @Email
     @NotEmpty
