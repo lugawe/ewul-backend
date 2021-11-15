@@ -25,7 +25,7 @@ public class Group implements Iterable<Role>, DbModel {
             joinColumns = @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_auth__group_role_group")),
             inverseJoinColumns = @JoinColumn(name = "auth_role", foreignKey = @ForeignKey(name = "fk_auth__group_role_role"))
     )
-    private List<Role> roles;
+    private Set<Role> roles;
 
     public Group() {
     }
@@ -65,11 +65,11 @@ public class Group implements Iterable<Role>, DbModel {
         this.name = name;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
