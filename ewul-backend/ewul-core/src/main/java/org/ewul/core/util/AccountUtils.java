@@ -20,7 +20,7 @@ public final class AccountUtils {
 
         Group group = account.getGroup();
         if (group != null) {
-            List<Role> roles = group.getRoles();
+            Set<Role> roles = group.getRoles();
             if (roles != null) {
                 Set<String> result = roles.stream()
                         .filter(Objects::nonNull)
