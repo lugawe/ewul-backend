@@ -56,11 +56,18 @@ public class Subgroup implements Comparable<Subgroup>, DbModel {
 
     @Override
     public int compareTo(Subgroup other) {
+
         int nameComparison = this.name.compareTo(other.name);
         if (nameComparison != 0) {
             return nameComparison < 0 ? -1 : 1;
         }
-        return this.color.compareTo(other.color);
+
+        int colorComparison = this.color.compareTo(other.color);
+        if (colorComparison != 0) {
+            return colorComparison < 0 ? -1 : 1;
+        }
+
+        return this.parent.compareTo(other.parent);
     }
 
     @Override
