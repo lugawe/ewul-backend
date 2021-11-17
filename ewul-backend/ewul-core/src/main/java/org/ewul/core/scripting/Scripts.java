@@ -1,5 +1,6 @@
 package org.ewul.core.scripting;
 
+import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
@@ -12,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -53,27 +57,40 @@ public final class Scripts {
         return SHELL.get();
     }
 
-    public static Script load(InputStream inputStream) {
+    public static Script load(InputStream inputStream, Map<String, ?> binding) {
         if (inputStream == null) {
             throw new NullPointerException("inputStream");
         }
         Script result = shell().parse(new InputStreamReader(inputStream));
+        result.setBinding(new Binding(new LinkedHashMap<>(binding)));
         log.debug("new script loaded");
         return result;
     }
 
-    public static Script load(String value) {
+    public static Script load(InputStream inputStream) {
+        return load(inputStream, Collections.emptyMap());
+    }
+
+    public static Script load(String value, Map<String, ?> binding) {
         if (value == null) {
             throw new NullPointerException("value");
         }
-        return load(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)));
+        return load(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), binding);
     }
 
-    public static Script load(File file) throws FileNotFoundException {
+    public static Script load(String value) {
+        return load(value, Collections.emptyMap());
+    }
+
+    public static Script load(File file, Map<String, ?> binding) throws FileNotFoundException {
         if (file == null) {
             throw new NullPointerException("file");
         }
-        return load(new FileInputStream(file));
+        return load(new FileInputStream(file), binding);
+    }
+
+    public static Script load(File file) throws FileNotFoundException {
+        return load(file, Collections.emptyMap());
     }
 
 }
