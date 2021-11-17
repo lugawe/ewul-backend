@@ -4,11 +4,11 @@ import java.util.*;
 
 public final class CollectionUtils {
 
-    private static class EmptyCollection<T> extends AbstractCollection<T> {
+    static class EmptyCollection<T> extends AbstractCollection<T> {
 
-        private static final Lazy<EmptyCollection<?>> instance = Lazy.of(EmptyCollection::new);
+        static final Lazy<EmptyCollection<?>> instance = Lazy.of(EmptyCollection::new);
 
-        private EmptyCollection() {
+        EmptyCollection() {
         }
 
         @Override
@@ -22,7 +22,7 @@ public final class CollectionUtils {
         }
 
         @SuppressWarnings("unchecked")
-        public static <T> EmptyCollection<T> getInstance() {
+        static <T> EmptyCollection<T> getInstance() {
             return (EmptyCollection<T>) instance.get();
         }
 
