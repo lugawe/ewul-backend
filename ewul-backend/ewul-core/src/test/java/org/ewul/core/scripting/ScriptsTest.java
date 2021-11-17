@@ -1,13 +1,11 @@
 package org.ewul.core.scripting;
 
 import groovy.lang.Script;
-import org.codehaus.groovy.control.MultipleCompilationErrorsException;
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ScriptsTest {
 
@@ -16,7 +14,7 @@ class ScriptsTest {
     private static final String invalid_val = "boo";
 
     @Test
-    void test() {
+    void test_scripts_compiling() {
 
         Script s1 = Scripts.load(val1);
         Object o1 = s1.run();
@@ -26,7 +24,7 @@ class ScriptsTest {
         Object o2 = s2.run();
         assertEquals("ä", o2);
 
-        assertThrows(MultipleCompilationErrorsException.class, () -> Scripts.load(invalid_val));
+        assertThrows(CompilationFailedException.class, () -> Scripts.load(invalid_val));
 
     }
 
