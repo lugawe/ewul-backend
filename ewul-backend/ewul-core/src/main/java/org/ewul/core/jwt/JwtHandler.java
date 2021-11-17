@@ -11,6 +11,10 @@ import org.ewul.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
@@ -200,8 +204,20 @@ public class JwtHandler {
 
     protected final Algorithm algorithm;
 
-    public JwtHandler(Algorithm algorithm) {
+    protected JwtHandler(Algorithm algorithm) {
         this.algorithm = Objects.requireNonNull(algorithm);
+    }
+
+    public JwtHandler(String key) {
+        this(Algorithm.HMAC512(key));
+    }
+
+    public JwtHandler(ECPublicKey publicKey, ECPrivateKey privateKey) {
+        this(Algorithm.ECDSA512(publicKey, privateKey));
+    }
+
+    public JwtHandler(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
+        this(Algorithm.RSA512(publicKey, privateKey));
     }
 
     protected DecodedJWT getDecodedJWT(String token) {
