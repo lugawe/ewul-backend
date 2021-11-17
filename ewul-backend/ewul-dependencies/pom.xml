@@ -18,7 +18,6 @@
     <properties>
         <!-- groovy -->
         <groovy.version>3.0.9</groovy.version>
-        <gmavenplus.version>1.12.1</gmavenplus.version>
         <!-- logging -->
         <slf4j.version>1.7.32</slf4j.version>
         <logback.version>1.2.5</logback.version>
@@ -28,6 +27,7 @@
         <guice.version>5.0.1</guice.version>
         <querydsl.version>5.0.0</querydsl.version>
         <jackson.version>2.12.4</jackson.version>
+        <activemq.version>5.16.3</activemq.version>
         <!-- server -->
         <dropwizard.version>2.0.25</dropwizard.version>
         <dropwizard-guicey.version>5.4.0</dropwizard-guicey.version>
@@ -123,6 +123,12 @@
                 <version>${jackson.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-broker</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
             <!-- server -->
 
             <dependency>
@@ -190,12 +196,6 @@
     <build>
         <pluginManagement>
             <plugins>
-
-                <plugin>
-                    <groupId>org.codehaus.gmavenplus</groupId>
-                    <artifactId>gmavenplus-plugin</artifactId>
-                    <version>${gmavenplus.version}</version>
-                </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
