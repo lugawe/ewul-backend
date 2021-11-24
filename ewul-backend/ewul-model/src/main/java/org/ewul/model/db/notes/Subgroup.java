@@ -39,6 +39,11 @@ public class Subgroup implements Comparable<Subgroup>, DbModel {
     @JoinColumn(name = "parent", foreignKey = @ForeignKey(name = "fk_notes__subgroup_children"))
     private SortedSet<Subgroup> children;
 
+    @OrderBy
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "subgroup", foreignKey = @ForeignKey(name = "fk_notes__subgroup_documents"))
+    private SortedSet<Document> documents;
+
     public Subgroup() {
     }
 
@@ -132,6 +137,14 @@ public class Subgroup implements Comparable<Subgroup>, DbModel {
 
     public void setChildren(SortedSet<Subgroup> children) {
         this.children = children;
+    }
+
+    public SortedSet<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(SortedSet<Document> documents) {
+        this.documents = documents;
     }
 
 }
