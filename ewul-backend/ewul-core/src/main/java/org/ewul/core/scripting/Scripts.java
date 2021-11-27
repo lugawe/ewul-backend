@@ -23,19 +23,19 @@ public final class Scripts {
 
     private static final Logger log = LoggerFactory.getLogger(Scripts.class);
 
-    private static class GroovyShellSupplier implements Supplier<GroovyShell> {
+    public static class GroovyShellSupplier implements Supplier<GroovyShell> {
 
-        final ClassLoader classLoader;
-        final Binding binding;
-        final Lazy<GroovyShell> groovyShell;
+        protected final ClassLoader classLoader;
+        protected final Binding binding;
+        private final Lazy<GroovyShell> groovyShell;
 
-        GroovyShellSupplier(ClassLoader classLoader, Binding binding) {
+        protected GroovyShellSupplier(ClassLoader classLoader, Binding binding) {
             this.classLoader = Objects.requireNonNull(classLoader, "classLoader");
             this.binding = Objects.requireNonNull(binding, "binding");
             this.groovyShell = Lazy.of(() -> new GroovyShell(classLoader, binding, compilerConfiguration()));
         }
 
-        CompilerConfiguration compilerConfiguration() {
+        protected CompilerConfiguration compilerConfiguration() {
             CompilerConfiguration configuration = new CompilerConfiguration();
             configuration.setTargetBytecode("1.8");
             configuration.setSourceEncoding("UTF-8");
