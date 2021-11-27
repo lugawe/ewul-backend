@@ -25,22 +25,27 @@ public final class Scripts {
 
     private static class GroovyShellSupplier implements Supplier<GroovyShell> {
 
-        private final ClassLoader classLoader;
+        final ClassLoader classLoader;
+        final Binding binding;
+        final Lazy<GroovyShell> groovyShell;
 
-        GroovyShellSupplier(ClassLoader classLoader) {
-            this.classLoader = Objects.requireNonNull(classLoader);
+        GroovyShellSupplier(ClassLoader classLoader, Binding binding) {
+            this.classLoader = Objects.requireNonNull(classLoader, "classLoader");
+            this.binding = Objects.requireNonNull(binding, "binding");
+            this.groovyShell = Lazy.of(() -> new GroovyShell(classLoader, binding, compilerConfiguration()));
         }
 
-        private CompilerConfiguration compilerConfiguration() {
+        CompilerConfiguration compilerConfiguration() {
             CompilerConfiguration configuration = new CompilerConfiguration();
+            configuration.setTargetBytecode("1.8");
             configuration.setSourceEncoding("UTF-8");
             configuration.addCompilationCustomizers(new ASTTransformationCustomizer(CompileStatic.class));
             return configuration;
         }
 
         @Override
-        public GroovyShell get() {
-            return new GroovyShell(classLoader, compilerConfiguration());
+        public final GroovyShell get() {
+            return groovyShell.get();
         }
 
     }
@@ -48,21 +53,22 @@ public final class Scripts {
     private static final Lazy<GroovyClassLoader> CLASS_LOADER
             = Lazy.of(() -> new GroovyClassLoader(ClassLoader.getSystemClassLoader()));
 
-    private static final Lazy<GroovyShell> SHELL = Lazy.of(new GroovyShellSupplier(CLASS_LOADER.get()));
-
     private Scripts() {
     }
 
-    private static GroovyShell shell() {
-        return SHELL.get();
+    private static GroovyShell shell(Binding binding) {
+        return new GroovyShellSupplier(CLASS_LOADER.get(), binding).get();
     }
 
-    public static Script load(InputStream inputStream, Map<String, ?> binding) {
+    private static GroovyShell shell(Map<?, ?> binding) {
+        return shell(new Binding(new LinkedHashMap<>(binding)));
+    }
+
+    public static Script load(InputStream inputStream, Map<?, ?> binding) {
         if (inputStream == null) {
             throw new NullPointerException("inputStream");
         }
-        Script result = shell().parse(new InputStreamReader(inputStream));
-        result.setBinding(new Binding(new LinkedHashMap<>(binding)));
+        Script result = shell(binding).parse(new InputStreamReader(inputStream));
         log.debug("new script loaded");
         return result;
     }
@@ -71,7 +77,7 @@ public final class Scripts {
         return load(inputStream, Collections.emptyMap());
     }
 
-    public static Script load(String value, Map<String, ?> binding) {
+    public static Script load(String value, Map<?, ?> binding) {
         if (value == null) {
             throw new NullPointerException("value");
         }
@@ -82,7 +88,7 @@ public final class Scripts {
         return load(value, Collections.emptyMap());
     }
 
-    public static Script load(File file, Map<String, ?> binding) throws FileNotFoundException {
+    public static Script load(File file, Map<?, ?> binding) throws FileNotFoundException {
         if (file == null) {
             throw new NullPointerException("file");
         }
