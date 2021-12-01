@@ -39,7 +39,7 @@
         <persistence-api.version>2.2.3</persistence-api.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <!-- testing -->
-        <junit.version>5.8.1</junit.version>
+        <junit.version>5.8.2</junit.version>
         <!-- maven plugins -->
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
