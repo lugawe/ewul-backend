@@ -12,23 +12,9 @@ public class CoreConfiguration implements Serializable {
 
     @Valid
     @NotNull
-    private ActiveMQConfiguration activeMQConfiguration = new ActiveMQConfiguration();
-
-    @Valid
-    @NotNull
     private JwtConfiguration jwtConfiguration = new JwtConfiguration();
 
     public CoreConfiguration() {
-    }
-
-    @JsonProperty("activemq")
-    public ActiveMQConfiguration getActiveMQConfiguration() {
-        return activeMQConfiguration;
-    }
-
-    @JsonProperty("activemq")
-    public void setActiveMQConfiguration(ActiveMQConfiguration activeMQConfiguration) {
-        this.activeMQConfiguration = activeMQConfiguration;
     }
 
     @JsonProperty("jwt")

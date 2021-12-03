@@ -42,12 +42,14 @@ public class AuthResource {
     @Path("/register")
     public Response register(@Valid RegisterRequest request) {
 
-        Optional<Account> account = authService.register(request.getEmail(), request.getName(), request.getPassword());
-        if (!account.isPresent()) {
-            throw new WebApplicationException(Response.status(400).build());
+        Account account;
+        try {
+            account = authService.register(request.getEmail(), request.getName(), request.getPassword());
+        } catch (Exception ex) {
+            throw new WebApplicationException(ex, Response.status(400).build());
         }
 
-        return Response.ok().build();
+        return Response.ok(account.getName()).build();
     }
 
     @UnitOfWork

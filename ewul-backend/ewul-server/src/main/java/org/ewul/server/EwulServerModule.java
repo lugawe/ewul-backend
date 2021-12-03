@@ -3,6 +3,8 @@ package org.ewul.server;
 import io.dropwizard.db.PooledDataSourceFactory;
 import io.dropwizard.hibernate.ScanningHibernateBundle;
 import org.ewul.core.entity.EntityDataHandler;
+import org.ewul.core.security.hashing.BCryptPasswordHashing;
+import org.ewul.core.security.hashing.PasswordHashing;
 import org.ewul.core.util.Lazy;
 import org.ewul.model.config.CoreConfiguration;
 import org.ewul.server.hibernate.HibernateHandler;
@@ -35,6 +37,7 @@ public class EwulServerModule extends DropwizardAwareModule<EwulServerConfig> {
         bind(CoreConfiguration.class).toProvider(() -> INSTANCE.get().configuration().getCoreConfiguration());
         bind(SessionFactory.class).toProvider(() -> HIBERNATE_BUNDLE.get().getSessionFactory());
         bind(EntityDataHandler.class).to(HibernateHandler.class);
+        bind(PasswordHashing.class).toProvider(BCryptPasswordHashing::getInstance);
     }
 
 }
