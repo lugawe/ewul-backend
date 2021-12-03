@@ -20,8 +20,8 @@ public class Account implements Comparable<Account>, Principal, DbModel {
     private UUID id;
 
     @NotNull
-    @Column(name = "display_name")
-    private String displayName;
+    @Column(name = "name")
+    private String name;
 
     @NotNull
     @Column(name = "first_name")
@@ -64,22 +64,22 @@ public class Account implements Comparable<Account>, Principal, DbModel {
         if (this == other) return true;
         if (!(other instanceof Account)) return false;
         Account account = (Account) other;
-        return Objects.equals(id, account.id) && Objects.equals(displayName, account.displayName);
+        return Objects.equals(id, account.id) && Objects.equals(name, account.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, displayName);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
-        return displayName;
+        return name;
     }
 
     @Override
     public int compareTo(Account account) {
-        return displayName.compareTo(account.displayName);
+        return name.compareTo(account.name);
     }
 
     @Override
@@ -93,15 +93,11 @@ public class Account implements Comparable<Account>, Principal, DbModel {
 
     @Override
     public String getName() {
-        return displayName;
+        return name;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFirstName() {
