@@ -19,6 +19,33 @@ public class AccountDAO extends BaseDAO<Account> {
         super(Account.class, handler);
     }
 
+    public boolean checkNameExists(String name) {
+
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+
+        return query().select(PATH.id).from(PATH).where(PATH.name.eq(name)).fetchCount() > 0;
+    }
+
+    public boolean checkEmailExists(String email) {
+
+        if (email == null) {
+            throw new NullPointerException("email");
+        }
+
+        return query().select(PATH.id).from(PATH).where(PATH.email.eq(email)).fetchCount() > 0;
+    }
+
+    public Optional<Account> getByName(String name) {
+
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+
+        return Optional.ofNullable(factory().selectFrom(PATH).where(PATH.name.eq(name)).fetchFirst());
+    }
+
     public Optional<Account> getByEmail(String email) {
 
         if (email == null) {
