@@ -30,7 +30,7 @@ class JwtHandlerTest {
         jwtHandler2 = new AccountJwtHandler(Algorithm.HMAC256("foobar"), jwtConfiguration);
         jwtHandler3 = new AccountJwtHandler(Algorithm.HMAC256("secret"), jwtConfiguration);
         account.setId(UUID.randomUUID());
-        account.setDisplayName("foobar");
+        account.setName("foobar");
         account.setProperties(new HashMap<>());
         account.getProperties().put("foo", "bar");
     }
