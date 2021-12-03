@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "auth_account", uniqueConstraints = @UniqueConstraint(name = "uq_auth__account_display_name", columnNames = "display_name"))
+@Table(name = "auth_account", uniqueConstraints = @UniqueConstraint(name = "uq_auth__account_name", columnNames = "name"))
 public class Account implements Comparable<Account>, Principal, DbModel {
 
     @Id
