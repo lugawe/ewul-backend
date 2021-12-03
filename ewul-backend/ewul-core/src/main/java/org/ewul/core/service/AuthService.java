@@ -1,10 +1,12 @@
 package org.ewul.core.service;
 
 import org.ewul.core.dao.auth.AccountDAO;
+import org.ewul.core.dao.auth.GroupDAO;
 import org.ewul.core.dao.auth.PasswordDAO;
 import org.ewul.core.jwt.AccountJwtHandler;
 import org.ewul.model.config.CoreConfiguration;
 import org.ewul.model.db.auth.Account;
+import org.ewul.model.db.auth.Group;
 import org.ewul.model.db.auth.Password;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,17 +25,20 @@ public class AuthService {
 
     protected final CoreConfiguration configuration;
     protected final AccountDAO accountDAO;
+    protected final GroupDAO groupDAO;
     protected final PasswordDAO passwordDAO;
     protected final AccountJwtHandler accountJwtHandler;
 
     @Inject
     public AuthService(CoreConfiguration configuration,
                        AccountDAO accountDAO,
+                       GroupDAO groupDAO,
                        PasswordDAO passwordDAO,
                        AccountJwtHandler accountJwtHandler) {
 
         this.configuration = Objects.requireNonNull(configuration);
         this.accountDAO = Objects.requireNonNull(accountDAO);
+        this.groupDAO = Objects.requireNonNull(groupDAO);
         this.passwordDAO = Objects.requireNonNull(passwordDAO);
         this.accountJwtHandler = Objects.requireNonNull(accountJwtHandler);
     }
@@ -64,6 +69,9 @@ public class AuthService {
         account.setName(name);
         account.setCreatedAt(now);
         account.setLastAccess(now);
+
+        Group group = groupDAO.getDefaultGroup();
+        account.setGroup(group);
 
         Password password = passwordDAO.createPassword(plainPassword);
         account.setPassword(password);
