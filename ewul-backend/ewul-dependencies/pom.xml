@@ -18,7 +18,7 @@
     <properties>
         <!-- logging -->
         <slf4j.version>1.7.32</slf4j.version>
-        <logback.version>1.2.5</logback.version>
+        <logback.version>1.2.7</logback.version>
         <!-- core -->
         <auth0-jwt.version>3.18.2</auth0-jwt.version>
         <guava.version>31.0.1-jre</guava.version>
@@ -27,7 +27,7 @@
         <jackson.version>2.12.4</jackson.version>
         <jbcrypt.version>0.4</jbcrypt.version>
         <!-- server -->
-        <dropwizard.version>2.0.25</dropwizard.version>
+        <dropwizard.version>2.0.26</dropwizard.version>
         <dropwizard-guicey.version>5.4.0</dropwizard-guicey.version>
         <!-- db -->
         <h2.version>1.4.200</h2.version>
