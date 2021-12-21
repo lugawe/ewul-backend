@@ -1,20 +1,23 @@
-package org.ewul.model.request.auth;
+package org.ewul.model.rest.request.auth;
 
-import org.ewul.model.request.Request;
+import org.ewul.model.rest.request.Request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-public class LoginRequest implements Request {
+public class RegisterRequest implements Request {
 
     @Email
     @NotEmpty
     private String email;
 
     @NotEmpty
+    private String name;
+
+    @NotEmpty
     private String password;
 
-    public LoginRequest() {
+    public RegisterRequest() {
     }
 
     public String getEmail() {
@@ -23,6 +26,14 @@ public class LoginRequest implements Request {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

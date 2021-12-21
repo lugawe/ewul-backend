@@ -1,6 +1,6 @@
-package org.ewul.model.request.common;
+package org.ewul.model.rest.request.common;
 
-import org.ewul.model.request.Request;
+import org.ewul.model.rest.request.Request;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
