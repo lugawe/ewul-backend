@@ -19,6 +19,8 @@
         <!-- logging -->
         <slf4j.version>1.7.32</slf4j.version>
         <logback.version>1.2.9</logback.version>
+        <!-- data generation -->
+        <swagger.version>2.1.11</swagger.version>
         <!-- core -->
         <auth0-jwt.version>3.18.2</auth0-jwt.version>
         <guava.version>31.0.1-jre</guava.version>
@@ -59,6 +61,20 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+            </dependency>
+
+            <!-- data generation -->
+
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-core</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
 
             <!-- db -->
