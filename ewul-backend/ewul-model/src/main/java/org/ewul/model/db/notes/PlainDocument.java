@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 @Entity
 @DiscriminatorValue("plain")
-public class PlainDocument extends Document implements Document.DocumentData<String> {
+public class PlainDocument extends Document implements Document.Data<String> {
 
     public PlainDocument() {
     }

@@ -13,7 +13,7 @@ import java.util.UUID;
 @DiscriminatorColumn(name = "document_type", discriminatorType = DiscriminatorType.STRING)
 public class Document implements Comparable<Document>, DbModel {
 
-    public interface DocumentData<T> {
+    public interface Data<T> {
 
         T getContent();
 
@@ -64,7 +64,7 @@ public class Document implements Comparable<Document>, DbModel {
 
     @Override
     public int compareTo(Document other) {
-        return this.createdAt.compareTo(other.createdAt);
+        return this.lastAccess.compareTo(other.lastAccess);
     }
 
     @Override
