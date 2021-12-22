@@ -97,11 +97,11 @@ public class Document implements Comparable<Document>, DbModel {
         this.description = description;
     }
 
-    public byte[] getData() {
+    protected byte[] getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
+    protected void setData(byte[] data) {
         this.data = data;
     }
 
