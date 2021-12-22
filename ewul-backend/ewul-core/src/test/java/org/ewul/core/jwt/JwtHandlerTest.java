@@ -1,13 +1,14 @@
 package org.ewul.core.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import org.ewul.core.modules.auth.JwtTokenHandler;
+import org.ewul.model.BasicUser;
 import org.ewul.model.User;
 import org.ewul.model.config.JwtConfiguration;
-import org.ewul.model.db.auth.Account;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -17,29 +18,26 @@ class JwtHandlerTest {
 
     static final JwtConfiguration jwtConfiguration = new JwtConfiguration();
 
-    static AccountJwtHandler jwtHandler1;
-    static AccountJwtHandler jwtHandler2;
+    static JwtTokenHandler jwtHandler1;
+    static JwtTokenHandler jwtHandler2;
 
-    static AccountJwtHandler jwtHandler3;
-
-    static Account account = new Account();
+    static JwtTokenHandler jwtHandler3;
 
     @BeforeAll
     static void init() {
-        jwtHandler1 = new AccountJwtHandler(Algorithm.HMAC256("foobar"), jwtConfiguration);
-        jwtHandler2 = new AccountJwtHandler(Algorithm.HMAC256("foobar"), jwtConfiguration);
-        jwtHandler3 = new AccountJwtHandler(Algorithm.HMAC256("secret"), jwtConfiguration);
-        account.setId(UUID.randomUUID());
-        account.setName("foobar");
-        account.setProperties(new HashMap<>());
-        account.getProperties().put("foo", "bar");
+        jwtHandler1 = new JwtTokenHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
+        jwtHandler2 = new JwtTokenHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
+        jwtHandler3 = new JwtTokenHandler(jwtConfiguration, Algorithm.HMAC256("secret"));
     }
 
     @Test
     void encode_decode_test() {
 
-        String token = new AccountJwtHandler.Builder()
-                .withAccount(account)
+        String token = new JwtTokenHandler.Builder()
+                .withUser(new BasicUser() {{
+                    setName("Test-User");
+                    setId(UUID.randomUUID());
+                }})
                 .withIssuer("test1")
                 .withProperty("prop1", "test!!!")
                 .withRole("role1")
@@ -49,24 +47,20 @@ class JwtHandlerTest {
 
         assertNotNull(token);
 
-        assertTrue(jwtHandler1.isValid(token));
-        assertTrue(jwtHandler2.isValid(token));
-        assertFalse(jwtHandler3.isValid(token));
+        Optional<User> user = jwtHandler1.decodeAccessToken(token);
+        assertTrue(user.isPresent());
 
-        User user = jwtHandler1.decode(token);
+        assertNotNull(user.get().getId());
+        assertEquals("Test-User", user.get().getName());
+        assertEquals(1, user.get().getRoles().size());
+        assertEquals(2, user.get().getProperties().size());
+        assertEquals("!!!test", user.get().getProperties().get("prop2"));
 
-        assertNotNull(user);
+        Optional<User> user2 = jwtHandler2.decodeAccessToken(token);
+        assertTrue(user2.isPresent());
 
-        assertEquals(account.getId(), user.getId());
-
-        user = jwtHandler2.decode(token);
-
-        assertNotNull(user);
-
-        assertEquals(account.getId(), user.getId());
-
-        assertThrows(RuntimeException.class, () -> jwtHandler3.decode(token));
-
+        Optional<User> user3 = jwtHandler3.decodeAccessToken(token);
+        assertFalse(user3.isPresent());
     }
 
 }

@@ -192,10 +192,24 @@ public class JwtTokenHandler implements TokenHandler {
             return builder.sign(algorithm);
         }
 
+        public String build(JwtTokenHandler jwtTokenHandler) {
+
+            if (jwtTokenHandler == null) {
+                throw new NullPointerException("jwtTokenHandler");
+            }
+
+            return this.build(jwtTokenHandler.algorithm);
+        }
+
     }
 
     protected final JwtConfiguration jwtConfiguration;
     protected final Algorithm algorithm;
+
+    public JwtTokenHandler(JwtConfiguration jwtConfiguration, Algorithm algorithm) {
+        this.jwtConfiguration = Objects.requireNonNull(jwtConfiguration);
+        this.algorithm = Objects.requireNonNull(algorithm);
+    }
 
     public JwtTokenHandler(JwtConfiguration jwtConfiguration) {
         this.jwtConfiguration = Objects.requireNonNull(jwtConfiguration);
