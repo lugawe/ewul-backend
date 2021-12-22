@@ -1,4 +1,4 @@
-package org.ewul.core.jwt;
+package org.ewul.core.modules.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -8,20 +8,21 @@ import com.auth0.jwt.interfaces.Verification;
 import org.ewul.core.util.MapUtils;
 import org.ewul.model.BasicUser;
 import org.ewul.model.User;
+import org.ewul.model.config.CoreConfiguration;
+import org.ewul.model.config.JwtConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.interfaces.ECPrivateKey;
-import java.security.interfaces.ECPublicKey;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
-public class JwtHandler {
+@Singleton
+public class JwtTokenHandler implements TokenHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(JwtHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(JwtTokenHandler.class);
 
     public static final String CLAIM_AUTH_ID = "auth_id";
     public static final String CLAIM_AUTH_NAME = "auth_name";
@@ -151,7 +152,7 @@ public class JwtHandler {
         public String build(Algorithm algorithm) {
 
             if (algorithm == null) {
-                throw new NullPointerException("param algorithm");
+                throw new NullPointerException("algorithm");
             }
 
             JWTCreator.Builder builder = JWT.create();
@@ -191,63 +192,57 @@ public class JwtHandler {
             return builder.sign(algorithm);
         }
 
-        public String build(JwtHandler jwtHandler) {
-
-            if (jwtHandler == null) {
-                throw new NullPointerException("param jwtHandler");
-            }
-
-            return this.build(jwtHandler.algorithm);
-        }
-
     }
 
+    protected final JwtConfiguration jwtConfiguration;
     protected final Algorithm algorithm;
 
-    protected JwtHandler(Algorithm algorithm) {
-        this.algorithm = Objects.requireNonNull(algorithm);
+    public JwtTokenHandler(JwtConfiguration jwtConfiguration) {
+        this.jwtConfiguration = Objects.requireNonNull(jwtConfiguration);
+        this.algorithm = Objects.requireNonNull(buildAlgorithm());
     }
 
-    public JwtHandler(String key) {
-        this(Algorithm.HMAC512(key));
+    @Inject
+    public JwtTokenHandler(CoreConfiguration coreConfiguration) {
+        this(coreConfiguration.getJwtConfiguration());
     }
 
-    public JwtHandler(ECPublicKey publicKey, ECPrivateKey privateKey) {
-        this(Algorithm.ECDSA512(publicKey, privateKey));
+    protected Algorithm buildAlgorithm() {
+        String secret = jwtConfiguration.getSecret();
+        if (secret == null) {
+            secret = UUID.randomUUID().toString();
+        }
+        return Algorithm.HMAC512(secret);
     }
 
-    public JwtHandler(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
-        this(Algorithm.RSA512(publicKey, privateKey));
-    }
+    @Override
+    public String generateAccessToken(User user) {
 
-    protected DecodedJWT getDecodedJWT(String token) {
-
-        if (token == null || token.isEmpty()) {
-            throw new IllegalArgumentException("param token");
+        if (user == null) {
+            throw new NullPointerException("user");
         }
 
-        Verification verification = JWT.require(algorithm);
-        verification.withClaimPresence(CLAIM_AUTH_ID);
+        String issuer = jwtConfiguration.getIssuer();
+        Duration lifetime = jwtConfiguration.getLifetime();
 
-        return verification.build().verify(token);
+        return new Builder()
+                .withUser(user)
+                .withIssuer(issuer)
+                .withExpiresAt(new Date(System.currentTimeMillis() + lifetime.toMillis()))
+                .build(algorithm);
     }
 
-    public boolean isValid(String token) {
+    @Override
+    public Optional<User> decodeAccessToken(String token) {
         try {
-            return getDecodedJWT(token) != null;
-        } catch (Exception ignored) {
-            return false;
-        }
-    }
-
-    public User decode(String token, Predicate<UUID> jwtIdChecker) {
-        try {
-            DecodedJWT jwt = getDecodedJWT(token);
-            UUID jwtId = UUID.fromString(jwt.getId());
-
-            if (!jwtIdChecker.test(jwtId)) {
-                throw new IllegalStateException(String.format("jti check failed: %s", jwtId));
+            if (token == null || token.isEmpty()) {
+                throw new IllegalArgumentException("token");
             }
+
+            Verification verification = JWT.require(algorithm);
+            verification.withClaimPresence(CLAIM_AUTH_ID);
+
+            DecodedJWT jwt = verification.build().verify(token);
 
             UUID authId = UUID.fromString(jwt.getClaim(CLAIM_AUTH_ID).asString());
             String authName = jwt.getClaim(CLAIM_AUTH_NAME).asString();
@@ -265,16 +260,11 @@ public class JwtHandler {
             map = MapUtils.sortedMap(Comparator.naturalOrder(), map);
             Map<String, String> properties = Collections.unmodifiableMap(MapUtils.toStringValueMap(map));
 
-            log.debug("jwt decoded: {}", authId);
-
-            return new BasicUser(authId, authName, roles, properties);
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("invalid jwt token", ex);
+            return Optional.of(new BasicUser(authId, authName, roles, properties));
+        } catch (Exception e) {
+            log.debug("invalid jwt", e);
+            return Optional.empty();
         }
-    }
-
-    public User decode(String token) {
-        return decode(token, Objects::nonNull);
     }
 
 }
