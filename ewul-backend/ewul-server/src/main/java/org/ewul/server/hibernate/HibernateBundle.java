@@ -2,14 +2,19 @@ package org.ewul.server.hibernate;
 
 import io.dropwizard.db.PooledDataSourceFactory;
 import io.dropwizard.hibernate.ScanningHibernateBundle;
+import org.ewul.core.util.Lazy;
 import org.ewul.server.EwulServerConfig;
 
 public class HibernateBundle extends ScanningHibernateBundle<EwulServerConfig> {
 
-    public static final String ENTITY_PACKAGE = "org.ewul.model.db";
+    private final static Lazy<HibernateBundle> instance = Lazy.of(HibernateBundle::new);
 
-    public HibernateBundle() {
-        super(ENTITY_PACKAGE);
+    public static HibernateBundle getInstance() {
+        return instance.get();
+    }
+
+    private HibernateBundle() {
+        super("org.ewul.model.db");
     }
 
     @Override
