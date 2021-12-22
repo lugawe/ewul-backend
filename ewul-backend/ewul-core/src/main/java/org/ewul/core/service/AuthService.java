@@ -100,7 +100,7 @@ public class AuthService {
             throw new IllegalArgumentException("email");
         }
         if (plainPassword == null || plainPassword.isEmpty()) {
-            throw new IllegalArgumentException("password");
+            throw new IllegalArgumentException("plainPassword");
         }
         if (filter == null) {
             throw new IllegalArgumentException("filter");
