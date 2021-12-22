@@ -1,4 +1,4 @@
-package org.ewul.core.security.hashing;
+package org.ewul.core.modules.auth;
 
 public interface PasswordHashing {
 
