@@ -39,7 +39,7 @@ public class HibernateQueryFactory extends com.querydsl.jpa.hibernate.HibernateQ
     @Override
     public <T> Serializable insert(T entity) {
         if (entity == null) {
-            throw new NullPointerException("param entity");
+            throw new NullPointerException("entity");
         }
         return session.get().save(entity);
     }
