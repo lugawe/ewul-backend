@@ -38,7 +38,7 @@ public class JwtCookieAuthFilter extends AuthFilter<String, User> {
             String value = JwtCookie.extractCookieValue(context.getCookies());
 
             if (value == null || !authenticate(context, value, SecurityContext.BASIC_AUTH)) {
-                throw new IllegalStateException("invalid jwt token");
+                throw new IllegalStateException("invalid jwt");
             }
 
         } catch (Exception ex) {
