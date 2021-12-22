@@ -1,8 +1,7 @@
 package org.ewul.server.auth;
 
 import io.dropwizard.auth.Authenticator;
-import org.ewul.core.jwt.AccountJwtHandler;
-import org.ewul.core.jwt.JwtHandler;
+import org.ewul.core.modules.auth.TokenHandler;
 import org.ewul.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,25 +14,18 @@ public class UserAuthenticator implements Authenticator<String, User> {
 
     private static final Logger log = LoggerFactory.getLogger(UserAuthenticator.class);
 
-    protected final JwtHandler jwtHandler;
+    protected final TokenHandler tokenHandler;
 
     @Inject
-    public UserAuthenticator(AccountJwtHandler jwtHandler) {
-        this.jwtHandler = Objects.requireNonNull(jwtHandler);
+    public UserAuthenticator(TokenHandler tokenHandler) {
+        this.tokenHandler = Objects.requireNonNull(tokenHandler);
     }
 
     @Override
     public Optional<User> authenticate(String token) {
-        try {
-            User user = jwtHandler.decode(token);
-            if (user == null || user.getId() == null) {
-                throw new IllegalStateException("invalid jwt token");
-            }
-            log.info("user {} has successfully authenticated", user);
-            return Optional.of(user);
-        } catch (Exception ignored) {
-            return Optional.empty();
-        }
+        Optional<User> result = tokenHandler.decodeAccessToken(token);
+        result.ifPresent((user) -> log.info("user {} has successfully authenticated", user));
+        return result;
     }
 
 }
