@@ -6,12 +6,12 @@ import javax.persistence.Transient;
 import java.nio.charset.StandardCharsets;
 
 @Entity
-@DiscriminatorValue(PlainDocument.DOCUMENT_TYPE)
-public class PlainDocument extends Document implements Document.Data<String> {
+@DiscriminatorValue(MarkdownDocument.DOCUMENT_TYPE)
+public class MarkdownDocument extends Document implements Document.Data<String> {
 
-    public static final String DOCUMENT_TYPE = "plain";
+    public static final String DOCUMENT_TYPE = "markdown";
 
-    public PlainDocument() {
+    public MarkdownDocument() {
     }
 
     @Override
