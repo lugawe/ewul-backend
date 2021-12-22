@@ -23,11 +23,9 @@ public class Account implements Comparable<Account>, Principal, DbModel {
     @Column(name = "name")
     private String name;
 
-    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
-    @NotNull
     @Column(name = "last_name")
     private String lastName;
 
