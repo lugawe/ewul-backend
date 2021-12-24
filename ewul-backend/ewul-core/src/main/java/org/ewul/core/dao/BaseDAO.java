@@ -33,28 +33,28 @@ public abstract class BaseDAO<T extends DbModel> {
 
     public InsertClause<?> insert(EntityPath<?> path) {
         if (path == null) {
-            throw new NullPointerException("param path");
+            throw new NullPointerException("path");
         }
         return factory().insert(path);
     }
 
     public Serializable insert(T entity) {
         if (entity == null) {
-            throw new NullPointerException("param entity");
+            throw new NullPointerException("entity");
         }
         return factory().insert(entity);
     }
 
     public UpdateClause<?> update(EntityPath<?> path) {
         if (path == null) {
-            throw new NullPointerException("param path");
+            throw new NullPointerException("path");
         }
         return factory().update(path);
     }
 
     public DeleteClause<?> delete(EntityPath<?> path) {
         if (path == null) {
-            throw new NullPointerException("param path");
+            throw new NullPointerException("path");
         }
         return factory().delete(path);
     }

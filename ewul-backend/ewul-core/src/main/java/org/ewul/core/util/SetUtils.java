@@ -9,7 +9,7 @@ public final class SetUtils {
 
     public static <T> SortedSet<T> sortedSet(Comparator<T> comparator, Collection<? extends T> values) {
         if (comparator == null) {
-            throw new NullPointerException("param comparator");
+            throw new NullPointerException("comparator");
         }
         if (values == null || values.isEmpty()) {
             values = Collections.emptySet();

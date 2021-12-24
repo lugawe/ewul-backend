@@ -36,7 +36,7 @@ public final class MapUtils {
 
     public static <K, V> SortedMap<K, V> sortedMap(Comparator<K> comparator, Map<? extends K, ? extends V> map) {
         if (comparator == null) {
-            throw new NullPointerException("param comparator");
+            throw new NullPointerException("comparator");
         }
         if (map == null || map.isEmpty()) {
             map = Collections.emptyMap();
@@ -52,7 +52,7 @@ public final class MapUtils {
 
     public static <K, V> Map<K, String> toStringValueMap(Map<K, V> map) {
         if (map == null) {
-            throw new NullPointerException("param map");
+            throw new NullPointerException("map");
         }
         Map<K, String> view = Maps.transformEntries(map, ToStringTransformer.getInstance());
         return new LinkedHashMap<>(view);
