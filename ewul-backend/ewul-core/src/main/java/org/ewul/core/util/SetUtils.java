@@ -19,6 +19,10 @@ public final class SetUtils {
         return sortedSet;
     }
 
+    public static <T> SortedSet<T> sortedSet(Comparator<T> comparator) {
+        return sortedSet(comparator, (Collection<? extends T>) null);
+    }
+
     @SafeVarargs
     public static <T> SortedSet<T> sortedSet(Comparator<T> comparator, T... values) {
         return sortedSet(comparator, Arrays.asList(values));

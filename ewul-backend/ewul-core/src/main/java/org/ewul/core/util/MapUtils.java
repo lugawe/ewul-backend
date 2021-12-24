@@ -41,7 +41,7 @@ public final class MapUtils {
         if (map == null || map.isEmpty()) {
             map = Collections.emptyMap();
         }
-        TreeMap<K, V> result = new TreeMap<>(comparator);
+        SortedMap<K, V> result = new TreeMap<>(comparator);
         result.putAll(map);
         return result;
     }
