@@ -41,7 +41,6 @@ public class Account implements Comparable<Account>, Principal, DbModel {
     @Column(name = "last_access")
     private LocalDateTime lastAccess;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "auth_group", foreignKey = @ForeignKey(name = "fk_auth__account_group"))
     private Group group;
