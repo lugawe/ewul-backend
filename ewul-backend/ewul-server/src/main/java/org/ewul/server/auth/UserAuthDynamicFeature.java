@@ -32,7 +32,7 @@ public class UserAuthDynamicFeature extends AuthDynamicFeature {
         if (authorizer == null) {
             throw new NullPointerException("authorizer");
         }
-        return new JwtCookieAuthFilter.Builder()
+        return new CookieAuthFilter.Builder()
                 .setPrefix(DEFAULT_PREFIX)
                 .setAuthenticator(authenticator)
                 .setAuthorizer(authorizer)

@@ -10,34 +10,35 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class JwtCookie {
+public final class AuthCookies {
 
-    public static final String AUTH_COOKIE_NAME = "auth_jwt";
+    public static final String AUTH_ACCESS_TOKEN = "auth_access_token";
+    //public static final String AUTH_REFRESH_TOKEN = "auth_refresh_token";
 
-    private JwtCookie() {
+    private AuthCookies() {
     }
 
-    public static String extractCookieValue(Map<String, Cookie> cookies) throws IllegalArgumentException {
+    public static String extractAccessToken(Map<String, Cookie> cookies) throws IllegalArgumentException {
 
         if (cookies == null || cookies.size() < 1) {
             throw new IllegalArgumentException("no cookies provided");
         }
 
-        Optional<Cookie> cookie = Optional.ofNullable(cookies.get(AUTH_COOKIE_NAME));
+        Optional<Cookie> cookie = Optional.ofNullable(cookies.get(AUTH_ACCESS_TOKEN));
         if (!cookie.isPresent()) {
-            throw new IllegalArgumentException(String.format("no %s cookie provided", AUTH_COOKIE_NAME));
+            throw new IllegalArgumentException(String.format("no %s cookie provided", AUTH_ACCESS_TOKEN));
         }
 
         return cookie.get().getValue();
     }
 
-    public static NewCookie createDefaultCookie(String jwt, Duration lifetime) {
-        Objects.requireNonNull(jwt);
+    public static NewCookie createAccessToken(String token, Duration lifetime) {
+        Objects.requireNonNull(token);
         Objects.requireNonNull(lifetime);
         int maxAge = (int) (lifetime.toMillis() / 1000);
         return new CookieBuilder()
-                .withName(AUTH_COOKIE_NAME)
-                .withValue(jwt)
+                .withName(AUTH_ACCESS_TOKEN)
+                .withValue(token)
                 .withMaxAge(maxAge)
                 .withHttpOnly(true)
                 .withPath(Constants.API_PATH)

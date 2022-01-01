@@ -11,23 +11,23 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.SecurityContext;
 
 @Priority(Priorities.AUTHENTICATION)
-public class JwtCookieAuthFilter extends AuthFilter<String, User> {
+public class CookieAuthFilter extends AuthFilter<String, User> {
 
-    public static class Builder extends AuthFilterBuilder<String, User, JwtCookieAuthFilter> {
+    public static class Builder extends AuthFilterBuilder<String, User, CookieAuthFilter> {
 
         @Inject
         public Builder() {
         }
 
         @Override
-        public JwtCookieAuthFilter newInstance() {
-            return new JwtCookieAuthFilter();
+        public CookieAuthFilter newInstance() {
+            return new CookieAuthFilter();
         }
 
     }
 
     @Inject
-    public JwtCookieAuthFilter() {
+    public CookieAuthFilter() {
     }
 
     @Override
@@ -35,10 +35,10 @@ public class JwtCookieAuthFilter extends AuthFilter<String, User> {
 
         try {
 
-            String value = JwtCookie.extractCookieValue(context.getCookies());
+            String value = AuthCookies.extractAccessToken(context.getCookies());
 
             if (value == null || !authenticate(context, value, SecurityContext.BASIC_AUTH)) {
-                throw new IllegalStateException("invalid jwt");
+                throw new IllegalStateException("invalid access token");
             }
 
         } catch (Exception ex) {
