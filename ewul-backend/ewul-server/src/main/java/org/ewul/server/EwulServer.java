@@ -4,6 +4,8 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.ewul.core.util.Lazy;
+import org.ewul.server.hibernate.HibernateBundle;
+import org.ewul.server.hibernate.HibernateModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
@@ -23,8 +25,11 @@ public class EwulServer extends Application<EwulServerConfig> {
 
     @Override
     public void initialize(Bootstrap<EwulServerConfig> bootstrap) {
-        bootstrap.addBundle(EwulServerModule.HIBERNATE_BUNDLE.get());
-        bootstrap.addBundle(GuiceBundle.builder().enableAutoConfig("org.ewul.server").modules(EwulServerModule.INSTANCE.get()).build());
+        bootstrap.addBundle(GuiceBundle.builder()
+                .enableAutoConfig(getClass().getPackage().getName())
+                .dropwizardBundles(HibernateBundle.getInstance())
+                .modules(new EwulServerModule(), new HibernateModule(HibernateBundle.getInstance()))
+                .build());
     }
 
     @Override
