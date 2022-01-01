@@ -3,6 +3,7 @@ package org.ewul.server.hibernate;
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPQLTemplates;
 import org.ewul.core.entity.EntityQueryFactory;
+import org.ewul.model.db.DbModel;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class HibernateQueryFactory extends com.querydsl.jpa.hibernate.HibernateQ
     }
 
     @Override
-    public <T> Serializable insert(T entity) {
+    public <T extends DbModel> Serializable insert(T entity) {
         if (entity == null) {
             throw new NullPointerException("entity");
         }

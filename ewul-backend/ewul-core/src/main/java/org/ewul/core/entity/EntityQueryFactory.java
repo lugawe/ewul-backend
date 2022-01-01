@@ -1,11 +1,12 @@
 package org.ewul.core.entity;
 
 import com.querydsl.jpa.JPQLQueryFactory;
+import org.ewul.model.db.DbModel;
 
 import java.io.Serializable;
 
 public interface EntityQueryFactory extends JPQLQueryFactory {
 
-    <T> Serializable insert(T entity);
+    <T extends DbModel> Serializable insert(T entity);
 
 }
