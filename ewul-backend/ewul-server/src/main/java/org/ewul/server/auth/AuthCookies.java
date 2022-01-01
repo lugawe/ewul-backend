@@ -32,7 +32,7 @@ public final class AuthCookies {
         return cookie.get().getValue();
     }
 
-    public static NewCookie createAccessToken(String token, Duration lifetime) {
+    public static NewCookie createAccessTokenCookie(String token, Duration lifetime) {
         Objects.requireNonNull(token);
         Objects.requireNonNull(lifetime);
         int maxAge = (int) (lifetime.toMillis() / 1000);
