@@ -22,11 +22,11 @@
         <!-- data generation -->
         <swagger.version>2.1.11</swagger.version>
         <!-- core -->
-        <auth0-jwt.version>3.18.2</auth0-jwt.version>
         <guava.version>31.0.1-jre</guava.version>
         <guice.version>5.0.1</guice.version>
         <querydsl.version>5.0.0</querydsl.version>
         <jackson.version>2.12.4</jackson.version>
+        <auth0-jwt.version>3.18.2</auth0-jwt.version>
         <jbcrypt.version>0.4</jbcrypt.version>
         <!-- server -->
         <dropwizard.version>2.0.28</dropwizard.version>
@@ -88,12 +88,6 @@
             <!-- core -->
 
             <dependency>
-                <groupId>com.auth0</groupId>
-                <artifactId>java-jwt</artifactId>
-                <version>${auth0-jwt.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
@@ -127,6 +121,12 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${auth0-jwt.version}</version>
             </dependency>
 
             <dependency>
