@@ -1,5 +1,6 @@
 package org.ewul.server.auth;
 
+import org.ewul.server.Constants;
 import org.ewul.server.util.CookieBuilder;
 
 import javax.ws.rs.core.Cookie;
@@ -39,7 +40,7 @@ public final class JwtCookie {
                 .withValue(jwt)
                 .withMaxAge(maxAge)
                 .withHttpOnly(true)
-                .withPath("/api/")
+                .withPath(Constants.API_PATH)
                 .buildNewCookie();
     }
 

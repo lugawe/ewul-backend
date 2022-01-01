@@ -35,7 +35,7 @@ public class EwulServer extends Application<EwulServerConfig> {
     @Override
     public void run(EwulServerConfig config, Environment environment) {
         log.info("running version: {}", Constants.VERSION);
-        environment.jersey().setUrlPattern("/api/*");
+        environment.jersey().setUrlPattern(Constants.API_PATH);
     }
 
 }
