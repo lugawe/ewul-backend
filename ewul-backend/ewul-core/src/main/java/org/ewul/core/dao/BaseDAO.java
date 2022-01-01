@@ -52,6 +52,13 @@ public abstract class BaseDAO<T extends DbModel> {
         return factory().update(path);
     }
 
+    public void update(T entity) {
+        if (entity == null) {
+            throw new NullPointerException("entity");
+        }
+        factory().update(entity);
+    }
+
     public DeleteClause<?> delete(EntityPath<?> path) {
         if (path == null) {
             throw new NullPointerException("path");

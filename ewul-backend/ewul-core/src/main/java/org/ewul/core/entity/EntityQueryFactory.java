@@ -9,4 +9,6 @@ public interface EntityQueryFactory extends JPQLQueryFactory {
 
     <T extends DbModel> Serializable insert(T entity);
 
+    <T extends DbModel> void update(T entity);
+
 }

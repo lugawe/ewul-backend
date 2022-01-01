@@ -45,4 +45,12 @@ public class HibernateQueryFactory extends com.querydsl.jpa.hibernate.HibernateQ
         return session.get().save(entity);
     }
 
+    @Override
+    public <T extends DbModel> void update(T entity) {
+        if (entity == null) {
+            throw new NullPointerException("entity");
+        }
+        session.get().update(entity);
+    }
+
 }
