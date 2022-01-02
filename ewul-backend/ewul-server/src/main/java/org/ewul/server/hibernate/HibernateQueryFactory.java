@@ -2,7 +2,7 @@ package org.ewul.server.hibernate;
 
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPQLTemplates;
-import org.ewul.core.entity.EntityQueryFactory;
+import org.ewul.core.entity.QueryFactory;
 import org.ewul.model.db.DbModel;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 public class HibernateQueryFactory extends com.querydsl.jpa.hibernate.HibernateQueryFactory
-        implements EntityQueryFactory {
+        implements QueryFactory {
 
     private static final Logger log = LoggerFactory.getLogger(HibernateQueryFactory.class);
 
