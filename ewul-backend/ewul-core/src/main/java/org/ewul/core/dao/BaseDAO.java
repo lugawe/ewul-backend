@@ -6,7 +6,7 @@ import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.jpa.JPQLQuery;
 import org.ewul.core.entity.EntityDataHandler;
-import org.ewul.core.entity.EntityQueryFactory;
+import org.ewul.core.entity.QueryFactory;
 import org.ewul.model.db.DbModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public abstract class BaseDAO<T extends DbModel> {
         this.handler = Objects.requireNonNull(handler);
     }
 
-    public final EntityQueryFactory factory() {
+    public final QueryFactory factory() {
         log.debug("{}: create factory", this);
         return handler.createQueryFactory();
     }

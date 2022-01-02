@@ -4,7 +4,7 @@ import javax.persistence.EntityManagerFactory;
 
 public interface EntityDataHandler {
 
-    EntityQueryFactory createQueryFactory();
+    QueryFactory createQueryFactory();
 
     EntityManagerFactory getFactory();
 

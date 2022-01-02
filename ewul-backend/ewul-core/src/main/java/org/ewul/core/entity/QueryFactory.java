@@ -5,7 +5,7 @@ import org.ewul.model.db.DbModel;
 
 import java.io.Serializable;
 
-public interface EntityQueryFactory extends JPQLQueryFactory {
+public interface QueryFactory extends JPQLQueryFactory {
 
     <T extends DbModel> Serializable insert(T entity);
 
