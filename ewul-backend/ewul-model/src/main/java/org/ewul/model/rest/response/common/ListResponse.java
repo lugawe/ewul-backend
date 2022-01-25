@@ -4,12 +4,13 @@ import org.ewul.model.rest.response.Response;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListResponse implements Response {
 
     @NotNull
-    private List<?> items;
+    private List<?> items = new ArrayList<>();
 
     @Min(0)
     private long total;
