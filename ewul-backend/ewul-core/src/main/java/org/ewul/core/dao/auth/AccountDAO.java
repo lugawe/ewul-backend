@@ -8,6 +8,7 @@ import org.ewul.model.db.auth.QAccount;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Optional;
+import java.util.UUID;
 
 @Singleton
 public class AccountDAO extends BaseDAO<Account> {
@@ -35,6 +36,15 @@ public class AccountDAO extends BaseDAO<Account> {
         }
 
         return query().select(PATH.id).from(PATH).where(PATH.email.eq(email)).fetchCount() > 0;
+    }
+
+    public Optional<Account> getById(UUID id) {
+
+        if (id == null) {
+            throw new NullPointerException("id");
+        }
+
+        return Optional.ofNullable(factory().selectFrom(PATH).where(PATH.id.eq(id)).fetchFirst());
     }
 
     public Optional<Account> getByName(String name) {
