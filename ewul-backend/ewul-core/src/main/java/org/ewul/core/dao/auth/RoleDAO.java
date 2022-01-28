@@ -18,4 +18,20 @@ public class RoleDAO extends BaseDAO<Role> {
         super(Role.class, handler);
     }
 
+    public Role createRole(String name) {
+
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+
+        Role role = new Role();
+        role.setName(name);
+
+        if (factory().insert(role) == null) {
+            throw new IllegalStateException("cannot insert role entity");
+        }
+
+        return role;
+    }
+
 }
