@@ -30,7 +30,7 @@
         <jbcrypt.version>0.4</jbcrypt.version>
         <!-- server -->
         <dropwizard.version>2.0.28</dropwizard.version>
-        <dropwizard-guicey.version>5.4.1</dropwizard-guicey.version>
+        <dropwizard-guicey.version>5.4.2</dropwizard-guicey.version>
         <!-- db -->
         <h2.version>1.4.200</h2.version>
         <!-- javax -->
