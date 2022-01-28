@@ -37,7 +37,7 @@ public class BasicUser implements User {
 
     @Override
     public String toString() {
-        return String.format("BasicUser %s (%s)", name, id);
+        return String.format("BasicUser(id=%s, name=%s)", id, name);
     }
 
     @Override
