@@ -20,9 +20,9 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
-public class JwtTokenHandler implements TokenHandler {
+public class JwtAccessHandler implements AccessHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(JwtTokenHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(JwtAccessHandler.class);
 
     public static final String CLAIM_AUTH_ID = "auth_id";
     public static final String CLAIM_AUTH_NAME = "auth_name";
@@ -192,7 +192,7 @@ public class JwtTokenHandler implements TokenHandler {
             return builder.sign(algorithm);
         }
 
-        public String build(JwtTokenHandler jwtTokenHandler) {
+        public String build(JwtAccessHandler jwtTokenHandler) {
 
             if (jwtTokenHandler == null) {
                 throw new NullPointerException("jwtTokenHandler");
@@ -206,18 +206,18 @@ public class JwtTokenHandler implements TokenHandler {
     protected final JwtConfiguration jwtConfiguration;
     protected final Algorithm algorithm;
 
-    public JwtTokenHandler(JwtConfiguration jwtConfiguration, Algorithm algorithm) {
+    public JwtAccessHandler(JwtConfiguration jwtConfiguration, Algorithm algorithm) {
         this.jwtConfiguration = Objects.requireNonNull(jwtConfiguration);
         this.algorithm = Objects.requireNonNull(algorithm);
     }
 
-    public JwtTokenHandler(JwtConfiguration jwtConfiguration) {
+    public JwtAccessHandler(JwtConfiguration jwtConfiguration) {
         this.jwtConfiguration = Objects.requireNonNull(jwtConfiguration);
         this.algorithm = Objects.requireNonNull(buildAlgorithm());
     }
 
     @Inject
-    public JwtTokenHandler(CoreConfiguration coreConfiguration) {
+    public JwtAccessHandler(CoreConfiguration coreConfiguration) {
         this(coreConfiguration.getJwtConfiguration());
     }
 

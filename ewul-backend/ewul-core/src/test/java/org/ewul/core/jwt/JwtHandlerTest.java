@@ -1,7 +1,7 @@
 package org.ewul.core.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import org.ewul.core.modules.auth.JwtTokenHandler;
+import org.ewul.core.modules.auth.JwtAccessHandler;
 import org.ewul.model.BasicUser;
 import org.ewul.model.User;
 import org.ewul.model.config.JwtConfiguration;
@@ -18,22 +18,22 @@ class JwtHandlerTest {
 
     static final JwtConfiguration jwtConfiguration = new JwtConfiguration();
 
-    static JwtTokenHandler jwtHandler1;
-    static JwtTokenHandler jwtHandler2;
+    static JwtAccessHandler jwtHandler1;
+    static JwtAccessHandler jwtHandler2;
 
-    static JwtTokenHandler jwtHandler3;
+    static JwtAccessHandler jwtHandler3;
 
     @BeforeAll
     static void init() {
-        jwtHandler1 = new JwtTokenHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
-        jwtHandler2 = new JwtTokenHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
-        jwtHandler3 = new JwtTokenHandler(jwtConfiguration, Algorithm.HMAC256("secret"));
+        jwtHandler1 = new JwtAccessHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
+        jwtHandler2 = new JwtAccessHandler(jwtConfiguration, Algorithm.HMAC256("foobar"));
+        jwtHandler3 = new JwtAccessHandler(jwtConfiguration, Algorithm.HMAC256("secret"));
     }
 
     @Test
     void encode_decode_test() {
 
-        String token = new JwtTokenHandler.Builder()
+        String token = new JwtAccessHandler.Builder()
                 .withUser(new BasicUser() {{
                     setName("Test-User");
                     setId(UUID.randomUUID());

@@ -4,7 +4,7 @@ import org.ewul.model.User;
 
 import java.util.Optional;
 
-public interface TokenHandler {
+public interface AccessHandler {
 
     String generateAccessToken(User user);
 
