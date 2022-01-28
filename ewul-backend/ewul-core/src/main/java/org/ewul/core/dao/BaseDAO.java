@@ -83,7 +83,7 @@ public abstract class BaseDAO<T extends DbModel> {
 
     @Override
     public String toString() {
-        return String.format("BaseDAO { %s - %s }", entityClass.getSimpleName(), handler.getName());
+        return String.format("BaseDAO(entityClass=%s, handler=%s)", entityClass.getSimpleName(), handler.getName());
     }
 
     public final Class<T> getEntityClass() {
