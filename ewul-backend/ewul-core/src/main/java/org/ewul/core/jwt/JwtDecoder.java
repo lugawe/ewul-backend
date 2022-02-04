@@ -19,10 +19,10 @@ public class JwtDecoder {
         this.algorithm = Objects.requireNonNull(algorithm, "algorithm");
     }
 
-    private Optional<DecodedJWT> decode(String token) {
+    private Optional<DecodedJWT> decode(String token, TokenType tokenType) {
         try {
             Verification verification = JWT.require(algorithm);
-            verification.withClaimPresence(Jwt.CLAIM_TOKEN_TYPE);
+            verification.withClaim(Jwt.CLAIM_TOKEN_TYPE, tokenType.toString());
 
             return Optional.of(verification.build().verify(token));
         } catch (Exception e) {
@@ -32,11 +32,13 @@ public class JwtDecoder {
     }
 
     public Optional<UUID> decodeRefreshToken(String refreshToken) {
-        return decode(refreshToken).map(jwt -> UUID.fromString(jwt.getClaim(Jwt.CLAIM_AUTH_ID).asString()));
+        return decode(refreshToken, TokenType.REFRESH)
+                .map(jwt -> UUID.fromString(jwt.getClaim(Jwt.CLAIM_AUTH_ID).asString()));
     }
 
     public Optional<User> decodeAccessToken(String accessToken) {
-        return decode(accessToken).map(jwt -> jwt.getClaim(Jwt.CLAIM_USER).as(BasicUser.class));
+        return decode(accessToken, TokenType.ACCESS)
+                .map(jwt -> jwt.getClaim(Jwt.CLAIM_USER).as(BasicUser.class));
     }
 
 }
