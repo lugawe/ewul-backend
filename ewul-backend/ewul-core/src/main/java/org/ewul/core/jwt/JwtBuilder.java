@@ -11,11 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 public class JwtBuilder {
 
-    public static final String CLAIM_TOKEN_TYPE = "token_type";
-
-    public static final String CLAIM_AUTH_ID = "auth_id";
-    public static final String CLAIM_USER = "user";
-
     protected final Algorithm algorithm;
 
     private String issuer;
@@ -47,7 +42,7 @@ public class JwtBuilder {
         JWTCreator.Builder builder = JWT.create();
         builder.withJWTId(UUID.randomUUID().toString());
         builder.withIssuedAt(new Date());
-        builder.withClaim(CLAIM_TOKEN_TYPE, tokenType.toString());
+        builder.withClaim(Jwt.CLAIM_TOKEN_TYPE, tokenType.toString());
         if (issuer != null) {
             builder.withIssuer(issuer);
         }
@@ -65,7 +60,7 @@ public class JwtBuilder {
 
         JWTCreator.Builder builder = builder(TokenType.REFRESH);
 
-        builder.withClaim(CLAIM_AUTH_ID, user.getId().toString());
+        builder.withClaim(Jwt.CLAIM_AUTH_ID, user.getId().toString());
 
         return builder.sign(algorithm);
     }
@@ -78,7 +73,7 @@ public class JwtBuilder {
 
         JWTCreator.Builder builder = builder(TokenType.ACCESS);
 
-        builder.withClaim(CLAIM_USER, MapperUtils.toMap(user));
+        builder.withClaim(Jwt.CLAIM_USER, MapperUtils.toMap(user));
 
         return builder.sign(algorithm);
     }
