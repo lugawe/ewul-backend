@@ -7,6 +7,7 @@ import org.ewul.core.modules.auth.TokenType;
 import org.ewul.core.util.MapperUtils;
 import org.ewul.model.User;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +37,14 @@ public class JwtBuilder {
             throw new IllegalArgumentException();
         }
         Date expiresAt = new Date(System.currentTimeMillis() + timeUnit.toMillis(duration));
+        return this.withExpiresAt(expiresAt);
+    }
+
+    public JwtBuilder withExpiresAt(Duration duration) {
+        if (duration == null) {
+            throw new IllegalArgumentException();
+        }
+        Date expiresAt = new Date(System.currentTimeMillis() + duration.toMillis());
         return this.withExpiresAt(expiresAt);
     }
 
