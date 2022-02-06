@@ -3,6 +3,7 @@ package org.ewul.core.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.ewul.core.modules.auth.TokenType;
 import org.ewul.core.util.MapperUtils;
 import org.ewul.model.User;
 
