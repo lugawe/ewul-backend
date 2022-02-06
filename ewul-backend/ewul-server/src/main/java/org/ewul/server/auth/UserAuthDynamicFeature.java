@@ -3,40 +3,21 @@ package org.ewul.server.auth;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.setup.Environment;
+import org.ewul.core.modules.auth.AuthManager;
 import org.ewul.model.User;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 import javax.inject.Inject;
-import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
 
 @Provider
 public class UserAuthDynamicFeature extends AuthDynamicFeature {
 
-    public static final String DEFAULT_PREFIX = "AuthUser";
-
     @Inject
-    public UserAuthDynamicFeature(Environment environment,
-                                  UserAuthenticator authenticator,
-                                  UserAuthorizer authorizer) {
-
-        super(buildFilter(authenticator, authorizer));
+    public UserAuthDynamicFeature(Environment environment, AuthManager authManager) {
+        super(new CookieAuthFilter(authManager));
         environment.jersey().register(RolesAllowedDynamicFeature.class);
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
-    }
-
-    private static ContainerRequestFilter buildFilter(UserAuthenticator authenticator, UserAuthorizer authorizer) {
-        if (authenticator == null) {
-            throw new NullPointerException("authenticator");
-        }
-        if (authorizer == null) {
-            throw new NullPointerException("authorizer");
-        }
-        return new CookieAuthFilter.Builder()
-                .setPrefix(DEFAULT_PREFIX)
-                .setAuthenticator(authenticator)
-                .setAuthorizer(authorizer)
-                .buildAuthFilter();
     }
 
 }
