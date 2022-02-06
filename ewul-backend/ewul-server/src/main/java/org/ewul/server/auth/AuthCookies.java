@@ -6,7 +6,6 @@ import org.ewul.server.util.CookieBuilder;
 
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.NewCookie;
-import java.time.Duration;
 import java.util.*;
 
 public final class AuthCookies {
@@ -39,27 +38,13 @@ public final class AuthCookies {
         }
     }
 
-    public static NewCookie createRefreshTokenCookie(String refreshToken, Duration lifetime) {
-        Objects.requireNonNull(refreshToken);
-        Objects.requireNonNull(lifetime);
-        int maxAge = (int) (lifetime.toMillis() / 1000);
+    public static NewCookie createTokenCookie(String tokenValue, TokenType tokenType) {
+        Objects.requireNonNull(tokenValue);
+        Objects.requireNonNull(tokenType);
         return new CookieBuilder()
-                .withName(AUTH_REFRESH_TOKEN)
-                .withValue(refreshToken)
-                .withMaxAge(maxAge)
-                .withHttpOnly(true)
-                .withPath(Constants.API_PATH)
-                .buildNewCookie();
-    }
-
-    public static NewCookie createAccessTokenCookie(String accessToken, Duration lifetime) {
-        Objects.requireNonNull(accessToken);
-        Objects.requireNonNull(lifetime);
-        int maxAge = (int) (lifetime.toMillis() / 1000);
-        return new CookieBuilder()
-                .withName(AUTH_ACCESS_TOKEN)
-                .withValue(accessToken)
-                .withMaxAge(maxAge)
+                .withName(tokenType == TokenType.REFRESH ? AUTH_REFRESH_TOKEN : AUTH_ACCESS_TOKEN)
+                .withValue(tokenValue)
+                .withMaxAge(Integer.MAX_VALUE)
                 .withHttpOnly(true)
                 .withPath(Constants.API_PATH)
                 .buildNewCookie();
