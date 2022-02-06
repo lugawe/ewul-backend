@@ -6,11 +6,21 @@ import org.ewul.model.User;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 public abstract class AbstractAuthManager implements AuthManager {
 
     protected AbstractAuthManager() {
     }
+
+    @Override
+    public abstract String generateRefreshToken(UUID id);
+
+    @Override
+    public abstract String generateAccessToken(User user);
+
+    @Override
+    public abstract Optional<UUID> decodeRefreshToken(String refreshToken);
 
     @Override
     public abstract Optional<User> decodeAccessToken(String accessToken);
