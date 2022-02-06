@@ -1,6 +1,7 @@
 package org.ewul.core.modules.auth;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import org.ewul.core.jwt.JwtBuilder;
 import org.ewul.core.jwt.JwtDecoder;
 import org.ewul.model.User;
 import org.ewul.model.config.CoreConfiguration;
@@ -37,6 +38,27 @@ public class JwtAuthManager extends AbstractAuthManager {
             secret = UUID.randomUUID().toString();
         }
         return Algorithm.HMAC512(secret);
+    }
+
+    @Override
+    public String generateRefreshToken(UUID id) {
+        return new JwtBuilder(algorithm)
+                .withIssuer(jwtConfiguration.getIssuer())
+                .withExpiresAt(jwtConfiguration.getRefreshTokenLifetime())
+                .buildRefreshToken(id);
+    }
+
+    @Override
+    public String generateAccessToken(User user) {
+        return new JwtBuilder(algorithm)
+                .withIssuer(jwtConfiguration.getIssuer())
+                .withExpiresAt(jwtConfiguration.getAccessTokenLifetime())
+                .buildAccessToken(user);
+    }
+
+    @Override
+    public Optional<UUID> decodeRefreshToken(String refreshToken) {
+        return new JwtDecoder(algorithm).decodeRefreshToken(refreshToken);
     }
 
     @Override
