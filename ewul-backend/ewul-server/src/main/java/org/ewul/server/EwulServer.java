@@ -3,6 +3,7 @@ package org.ewul.server;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.ewul.core.modules.CoreModule;
 import org.ewul.core.util.Lazy;
 import org.ewul.server.hibernate.HibernateBundle;
 import org.ewul.server.hibernate.HibernateModule;
@@ -28,7 +29,7 @@ public class EwulServer extends Application<EwulServerConfig> {
         bootstrap.addBundle(GuiceBundle.builder()
                 .enableAutoConfig(getClass().getPackage().getName())
                 .dropwizardBundles(HibernateBundle.getInstance())
-                .modules(new EwulServerModule(), new HibernateModule(HibernateBundle.getInstance()))
+                .modules(new EwulServerModule(), new HibernateModule(HibernateBundle.getInstance()), new CoreModule())
                 .build());
     }
 

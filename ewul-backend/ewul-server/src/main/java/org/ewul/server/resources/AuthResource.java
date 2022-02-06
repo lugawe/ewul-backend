@@ -5,7 +5,7 @@ import org.ewul.core.service.AuthService;
 import org.ewul.model.db.auth.Account;
 import org.ewul.model.rest.request.auth.LoginRequest;
 import org.ewul.model.rest.request.auth.RegisterRequest;
-import org.ewul.server.auth.JwtCookie;
+import org.ewul.server.auth.AuthCookies;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
@@ -64,8 +64,8 @@ public class AuthResource {
 
         NewCookie authCookie;
         try {
-            String jwt = authService.generateJwt(account.get());
-            authCookie = JwtCookie.createDefaultCookie(jwt, Duration.ofDays(30));
+            String jwt = null;
+            authCookie = AuthCookies.createAccessTokenCookie(jwt, Duration.ofDays(30));
         } catch (Exception ex) {
             throw new WebApplicationException(ex, Response.status(401).build());
         }

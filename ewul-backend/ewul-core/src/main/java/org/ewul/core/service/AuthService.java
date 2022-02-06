@@ -4,10 +4,10 @@ import org.ewul.core.dao.auth.AccountDAO;
 import org.ewul.core.dao.auth.GroupDAO;
 import org.ewul.core.dao.auth.PasswordDAO;
 import org.ewul.core.dao.auth.RoleDAO;
-import org.ewul.core.modules.auth.PasswordHashing;
+import org.ewul.core.modules.auth.AuthManager;
+import org.ewul.core.modules.password.PasswordManager;
 import org.ewul.model.config.CoreConfiguration;
 import org.ewul.model.db.auth.Account;
-import org.ewul.model.db.auth.Group;
 import org.ewul.model.db.auth.Password;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,8 @@ public class AuthService {
     protected final PasswordDAO passwordDAO;
     protected final RoleDAO roleDAO;
 
-    protected final PasswordHashing passwordHashing;
+    protected final AuthManager authManager;
+    protected final PasswordManager passwordManager;
 
     @Inject
     public AuthService(CoreConfiguration configuration,
@@ -39,14 +40,16 @@ public class AuthService {
                        GroupDAO groupDAO,
                        PasswordDAO passwordDAO,
                        RoleDAO roleDAO,
-                       PasswordHashing passwordHashing) {
+                       AuthManager authManager,
+                       PasswordManager passwordManager) {
 
         this.configuration = Objects.requireNonNull(configuration);
         this.accountDAO = Objects.requireNonNull(accountDAO);
         this.groupDAO = Objects.requireNonNull(groupDAO);
         this.passwordDAO = Objects.requireNonNull(passwordDAO);
         this.roleDAO = Objects.requireNonNull(roleDAO);
-        this.passwordHashing = Objects.requireNonNull(passwordHashing);
+        this.authManager = Objects.requireNonNull(authManager);
+        this.passwordManager = Objects.requireNonNull(passwordManager);
     }
 
     public Account register(String email, String name, String plainPassword) {
@@ -76,10 +79,7 @@ public class AuthService {
         account.setCreatedAt(now);
         account.setLastAccess(now);
 
-        Group group = groupDAO.getDefaultGroup();
-        account.setGroup(group);
-
-        String hashedPassword = passwordHashing.hash(plainPassword);
+        String hashedPassword = passwordManager.hash(plainPassword);
         Password password = passwordDAO.createPassword(hashedPassword);
         account.setPassword(password);
 
@@ -111,7 +111,7 @@ public class AuthService {
             Account account = _account.get();
             if (filter.test(account)) {
                 Password password = account.getPassword();
-                if (password != null && passwordHashing.check(plainPassword, password.getHash())) {
+                if (password != null && passwordManager.check(plainPassword, password.getHash())) {
                     update(account);
                     return Optional.of(account);
                 }

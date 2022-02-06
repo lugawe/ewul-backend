@@ -37,7 +37,7 @@ public class JwtBuilderTest {
 
         assertNotNull(accessToken1);
 
-        String refreshToken1 = jwtBuilder1.buildRefreshToken(user);
+        String refreshToken1 = jwtBuilder1.buildRefreshToken(user.getId());
 
         assertNotNull(refreshToken1);
 
