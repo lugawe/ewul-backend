@@ -19,7 +19,11 @@ public class JwtConfiguration implements Serializable {
 
     @Valid
     @NotNull
-    private Duration lifetime = Duration.ofDays(14);
+    private Duration refreshTokenLifetime = Duration.ofDays(14);
+
+    @Valid
+    @NotNull
+    private Duration accessTokenLifetime = Duration.ofHours(4);
 
     public JwtConfiguration() {
     }
@@ -40,12 +44,20 @@ public class JwtConfiguration implements Serializable {
         this.issuer = issuer;
     }
 
-    public Duration getLifetime() {
-        return lifetime;
+    public Duration getRefreshTokenLifetime() {
+        return refreshTokenLifetime;
     }
 
-    public void setLifetime(Duration lifetime) {
-        this.lifetime = lifetime;
+    public void setRefreshTokenLifetime(Duration refreshTokenLifetime) {
+        this.refreshTokenLifetime = refreshTokenLifetime;
+    }
+
+    public Duration getAccessTokenLifetime() {
+        return accessTokenLifetime;
+    }
+
+    public void setAccessTokenLifetime(Duration accessTokenLifetime) {
+        this.accessTokenLifetime = accessTokenLifetime;
     }
 
 }
