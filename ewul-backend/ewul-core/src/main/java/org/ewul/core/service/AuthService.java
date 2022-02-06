@@ -1,11 +1,14 @@
 package org.ewul.core.service;
 
+import org.ewul.core.cache.Caches;
 import org.ewul.core.dao.auth.AccountDAO;
 import org.ewul.core.dao.auth.GroupDAO;
 import org.ewul.core.dao.auth.PasswordDAO;
 import org.ewul.core.dao.auth.RoleDAO;
 import org.ewul.core.modules.auth.AuthManager;
+import org.ewul.core.modules.auth.TokenType;
 import org.ewul.core.modules.password.PasswordManager;
+import org.ewul.model.User;
 import org.ewul.model.config.CoreConfiguration;
 import org.ewul.model.db.auth.Account;
 import org.ewul.model.db.auth.Password;
@@ -15,8 +18,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Singleton
@@ -50,6 +52,30 @@ public class AuthService {
         this.roleDAO = Objects.requireNonNull(roleDAO);
         this.authManager = Objects.requireNonNull(authManager);
         this.passwordManager = Objects.requireNonNull(passwordManager);
+    }
+
+    public Map<TokenType, String> createTokens(Account account) {
+
+        String refreshToken = authManager.generateRefreshToken(account.getId());
+        String accessToken = refreshAccessToken(refreshToken).orElse(null);
+
+        Map<TokenType, String> result = new LinkedHashMap<>();
+        result.put(TokenType.REFRESH, refreshToken);
+        result.put(TokenType.ACCESS, accessToken);
+
+        return Collections.unmodifiableMap(result);
+    }
+
+    public Optional<String> refreshAccessToken(String refreshToken) {
+
+        Optional<UUID> id = authManager.decodeRefreshToken(refreshToken);
+        if (!id.isPresent()) {
+            return Optional.empty();
+        }
+
+        User user = Caches.USER_CACHE.getUnchecked(id.get());
+
+        return Optional.of(authManager.generateAccessToken(user));
     }
 
     public Account register(String email, String name, String plainPassword) {

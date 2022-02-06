@@ -1,6 +1,7 @@
 package org.ewul.server.resources;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import org.ewul.core.modules.auth.TokenType;
 import org.ewul.core.service.AuthService;
 import org.ewul.model.db.auth.Account;
 import org.ewul.model.rest.request.auth.LoginRequest;
@@ -14,7 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class AuthResource {
         try {
             account = authService.register(request.getEmail(), request.getName(), request.getPassword());
         } catch (Exception ex) {
-            throw new WebApplicationException(ex, Response.status(400).build());
+            throw new WebApplicationException(ex, Response.Status.BAD_REQUEST);
         }
 
         return Response.ok(account.getName()).build();
@@ -59,18 +60,30 @@ public class AuthResource {
 
         Optional<Account> account = authService.login(request.getEmail(), request.getPassword());
         if (!account.isPresent()) {
-            throw new WebApplicationException(Response.status(401).build());
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
 
-        NewCookie authCookie;
-        try {
-            String jwt = null;
-            authCookie = AuthCookies.createAccessTokenCookie(jwt, Duration.ofDays(30));
-        } catch (Exception ex) {
-            throw new WebApplicationException(ex, Response.status(401).build());
+        Map<TokenType, String> tokens = authService.createTokens(account.get());
+
+        NewCookie refreshTokenCookie = AuthCookies.createTokenCookie(tokens.get(TokenType.REFRESH), TokenType.REFRESH);
+        NewCookie accessTokenCookie = AuthCookies.createTokenCookie(tokens.get(TokenType.ACCESS), TokenType.ACCESS);
+
+        return Response.ok().cookie(refreshTokenCookie, accessTokenCookie).build();
+    }
+
+    @UnitOfWork
+    @GET
+    @Path("/refresh")
+    public Response refresh(@CookieParam(AuthCookies.AUTH_REFRESH_TOKEN) String refreshToken) {
+
+        Optional<String> accessToken = authService.refreshAccessToken(refreshToken);
+        if (!accessToken.isPresent()) {
+            throw new WebApplicationException(Response.Status.FORBIDDEN);
         }
 
-        return Response.ok().cookie(authCookie).build();
+        NewCookie accessTokenCookie = AuthCookies.createTokenCookie(accessToken.get(), TokenType.ACCESS);
+
+        return Response.ok().cookie(accessTokenCookie).build();
     }
 
 }
