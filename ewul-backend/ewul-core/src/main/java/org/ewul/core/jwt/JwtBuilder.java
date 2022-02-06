@@ -62,15 +62,15 @@ public class JwtBuilder {
         return builder;
     }
 
-    public String buildRefreshToken(User user) {
+    public String buildRefreshToken(UUID id) {
 
-        if (user == null) {
-            throw new NullPointerException("user");
+        if (id == null) {
+            throw new NullPointerException("id");
         }
 
         JWTCreator.Builder builder = builder(TokenType.REFRESH);
 
-        builder.withClaim(Jwt.CLAIM_AUTH_ID, user.getId().toString());
+        builder.withClaim(Jwt.CLAIM_AUTH_ID, id.toString());
 
         return builder.sign(algorithm);
     }
