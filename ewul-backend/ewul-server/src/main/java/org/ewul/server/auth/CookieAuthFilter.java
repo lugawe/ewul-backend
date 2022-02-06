@@ -15,7 +15,6 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Priority(Priorities.AUTHENTICATION)
@@ -26,14 +25,15 @@ public class CookieAuthFilter implements ContainerRequestFilter {
 
     private final UnauthorizedHandler unauthorizedHandler = new DefaultUnauthorizedHandler();
 
-    private final AuthManager authManager;
     private final UserAuthenticator userAuthenticator;
     private final UserAuthorizer userAuthorizer;
 
     public CookieAuthFilter(AuthManager authManager) {
-        this.authManager = Objects.requireNonNull(authManager);
-        this.userAuthenticator = new UserAuthenticator(this.authManager);
-        this.userAuthorizer = new UserAuthorizer(this.authManager);
+        if (authManager == null) {
+            throw new NullPointerException("authManager");
+        }
+        this.userAuthenticator = new UserAuthenticator(authManager);
+        this.userAuthorizer = new UserAuthorizer(authManager);
     }
 
     private SecurityContext createSecurityContext(ContainerRequestContext ctx, User user) {
